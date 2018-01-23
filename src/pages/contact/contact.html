@@ -1,17 +1,34 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Contact
+      {{coin.name}} News
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
+  <ion-card *ngFor="let article of articles" (click)="openBrowser(article.url)">
     <ion-item>
-      <ion-icon name="ionic" item-start></ion-icon>
-      @ionicframework
+      <h2 text-nowrap style="font-weight: bold;">{{article?.title}}</h2>
+      <p *ngIf="article.author">by {{article.author}}</p>
     </ion-item>
-  </ion-list>
+    <img [src]="article.urlToImage" onError="this.src='assets/imgs/stock-article.jpg'">
+
+    <ion-card-content>
+      <p>{{article.description}}</p>
+    </ion-card-content>
+    <ion-row>
+      <ion-col>
+        <ion-note>{{article.source.name}}</ion-note>
+      </ion-col>
+      <ion-col>
+
+      </ion-col>
+      <ion-col text-right>
+        <ion-note>
+          {{article.publishedAt.split('T')[0] | timeAgo}}
+        </ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-card>
 </ion-content>

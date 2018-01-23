@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
+import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
@@ -13,6 +14,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CryptodataProvider } from '../providers/cryptodata/cryptodata';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { CryptodataProvider } from '../providers/cryptodata/cryptodata';
     AboutPage,
     ContactPage,
     SettingsPage,
-    TabsPage
+    TabsPage,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,8 @@ import { CryptodataProvider } from '../providers/cryptodata/cryptodata';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CryptodataProvider
+    CryptodataProvider,
+    InAppBrowser
   ]
 })
 export class AppModule {}

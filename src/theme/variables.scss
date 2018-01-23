@@ -34,7 +34,7 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
+  primary:    #00B0FF,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
@@ -42,7 +42,7 @@ $colors: (
 );
 
 // top toolbar
-$toolbar-md-background: color($colors, secondary);
+$toolbar-md-background: color($colors, primary);
 // bottom tabs
 $tabs-md-background: color($colors, light);
 //$tabs-md-tab-color: color($colors, light);

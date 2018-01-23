@@ -1,10 +1,20 @@
-page-home {
-
+.red-top {
+    border-top: 4px solid #FF4081;
+}
+.green-top {
+    border-top: 4px solid #1DE9B6;
 }
 
-.red_top {
-    border-top: 4px solid red;
+.coin-price {
+    font-size: 30px;
+    font-weight: 200;
 }
-.green_top {
-    border-top: 4px solid #32db64;
+
+.coin-percent-change {
+    color: #757575;
+    float: right;
+}
+
+.coin-name {
+    font-weight: bold;
 }

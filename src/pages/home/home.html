@@ -5,13 +5,17 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card *ngFor="let coin of coins" >
-        <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red_top' : 'green_top'">
-          <strong>{{coin.name}}</strong><span> ({{coin.symbol}})</span>
-        </ion-card-header>
-        <ion-card-content>
-          <h1 style="font-size: 30px; font-weight: 100;">{{coin.price_usd}}</h1>
-          The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
-        </ion-card-content>
-      </ion-card>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-card *ngFor="let coin of coins" (click)="pushPage(coin)">
+    <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
+      <span class="coin-name">{{coin.name}}</span>
+      <span> ({{coin.symbol}})</span>
+      <span class="coin-percent-change">{{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}</span>
+    </ion-card-header>
+    <ion-card-content>
+      <span class="coin-price">$ {{coin.price_usd}}</span>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
