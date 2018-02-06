@@ -2,11 +2,12 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { TimeAgoPipe } from 'time-ago-pipe';
 
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+// pages
+import { PortfolioPage } from '../pages/portfolio/portfolio';
+import { NewsPage } from '../pages/news/news';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
@@ -16,12 +17,18 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { CryptodataProvider } from '../providers/cryptodata/cryptodata';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
+// firebase
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { firebaseConfig } from '../environment';
+
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    AboutPage,
-    ContactPage,
+    PortfolioPage,
+    NewsPage,
     SettingsPage,
     TabsPage,
     TimeAgoPipe
@@ -29,14 +36,17 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    AboutPage,
-    ContactPage,
+    PortfolioPage,
+    NewsPage,
     SettingsPage,
     TabsPage
   ],

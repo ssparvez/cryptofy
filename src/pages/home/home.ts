@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { CryptodataProvider } from '../../providers/cryptodata/cryptodata';
-import { ContactPage } from '../contact/contact';
+import { NewsPage } from '../news/news';
 
 @Component({
   selector: 'page-home',
@@ -39,7 +39,7 @@ export class HomePage {
     // push another page onto the navigation stack
     // causing the nav controller to transition to the new page
     // optional data can also be passed to the pushed page.
-    this.navCtrl.push(ContactPage, {
+    this.navCtrl.push(NewsPage, {
       coin: coin
     });
   }

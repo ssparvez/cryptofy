@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      About
+      Portfolio
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -11,6 +11,9 @@
     <ion-row>
       <ion-col width-100>
         <ion-list>
+          <ion-item *ngFor="let item of items | async">
+            <strong>{{item.title}}:</strong> {{item.description}}
+          </ion-item>
           <ion-item>
             <strong>App name:</strong> Cryptofy
           </ion-item>

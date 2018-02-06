@@ -1,8 +1,18 @@
-.red-top {
-    border-top: 4px solid #FF4081;
+.red- {
+    &text {
+        color: #FF4081;
+    }
+    &top {
+        border-top: 4px solid #FF4081;
+    }
 }
-.green-top {
-    border-top: 4px solid #1DE9B6;
+.green- {
+    &text {
+        color: #1DE9B6;
+    }
+    &top {
+        border-top: 4px solid #1DE9B6;
+    }
 }
 
 .coin-price {
@@ -11,7 +21,6 @@
 }
 
 .coin-percent-change {
-    color: #757575;
     float: right;
 }
 

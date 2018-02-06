@@ -8,11 +8,12 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <span style="float: right; padding-right: 16px; padding-bottom: 4px;">Past 24h</span>
   <ion-card *ngFor="let coin of coins" (click)="pushPage(coin)">
     <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
       <span class="coin-name">{{coin.name}}</span>
       <span> ({{coin.symbol}})</span>
-      <span class="coin-percent-change">{{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}</span>
+      <span class="coin-percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">{{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}</span>
     </ion-card-header>
     <ion-card-content>
       <span class="coin-price">$ {{coin.price_usd}}</span>

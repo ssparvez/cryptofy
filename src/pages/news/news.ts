@@ -5,10 +5,10 @@ import { NavParams } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @Component({
-  selector: 'page-contact',
-  templateUrl: 'contact.html'
+  selector: 'page-news',
+  templateUrl: 'news.html'
 })
-export class ContactPage {
+export class NewsPage {
   coin: any;
   articles = [];
   
