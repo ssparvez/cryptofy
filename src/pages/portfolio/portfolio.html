@@ -10,20 +10,46 @@
   <ion-grid>
     <ion-row>
       <ion-col width-100>
-        <ion-list>
-          <ion-item *ngFor="let item of items | async">
-            <strong>{{item.title}}:</strong> {{item.description}}
-          </ion-item>
-          <ion-item>
-            <strong>App name:</strong> Cryptofy
-          </ion-item>
-          <ion-item>
-            <strong>Version:</strong> 1.0.0
-          </ion-item>
-          <ion-item>
-            <strong>Description:</strong> Crypto tracker
-          </ion-item>
-        </ion-list>
+        <div *ngIf="auth.user | async; then authenticated else guest">
+          <!-- template will replace this div -->
+        </div>
+        <!-- User NOT logged in -->
+        <ng-template #guest>
+          <h3 text-center>Sign in to get started...</h3>
+          <ion-list>
+            <ion-item><button ion-button clear icon-start color="google" (click)="auth.signIn('google')">
+                <ion-icon name='logo-google' is-active="false"></ion-icon>
+                Google
+              </button></ion-item>
+            <ion-item><button ion-button clear icon-start color="facebook" (click)="auth.signIn('facebook')">
+                <ion-icon name='logo-facebook' is-active="false"></ion-icon>
+                Facebook
+              </button></ion-item>
+            <ion-item><button ion-button clear icon-start color="twitter" (click)="auth.signIn('twitter')">
+                <ion-icon name='logo-twitter' is-active="false"></ion-icon>
+                Twitter
+              </button></ion-item>
+          </ion-list>
+        </ng-template>
+        <!-- User logged in -->
+        <ng-template #authenticated>
+          <div *ngIf="auth.user | async as user">
+            <h3>Howdy, {{ user.displayName }}</h3>
+            <p>Favorite Color: {{ user?.favoriteColor }} </p>
+            <div *ngIf="!user.wallets">
+                <h4 ion-text color="danger">You don't have any wallets yet.</h4>
+                <button ion-button outline (click)="displayWallets()">Add Wallets</button>
+            </div>
+            <ion-list>
+                <ion-item *ngFor="let item of items | async">
+                  <strong>{{item.title}}:</strong> {{item.description}}
+                </ion-item>
+                <ion-item>
+                  <strong>Description:</strong> Crypto tracker
+                </ion-item>
+              </ion-list>
+          </div>
+        </ng-template>
       </ion-col>
     </ion-row>
   </ion-grid>

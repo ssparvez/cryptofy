@@ -11,6 +11,8 @@ import { NewsPage } from '../pages/news/news';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
+import { WalletsPage } from '../pages/wallets/wallets';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -22,6 +24,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { firebaseConfig } from '../environment';
+import { CoreModule } from '../core/core.module';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +34,7 @@ import { firebaseConfig } from '../environment';
     PortfolioPage,
     NewsPage,
     SettingsPage,
+    WalletsPage,
     TabsPage,
     TimeAgoPipe
   ],
@@ -40,6 +45,7 @@ import { firebaseConfig } from '../environment';
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+    CoreModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -48,7 +54,8 @@ import { firebaseConfig } from '../environment';
     PortfolioPage,
     NewsPage,
     SettingsPage,
-    TabsPage
+    TabsPage,
+    WalletsPage
   ],
   providers: [
     StatusBar,
