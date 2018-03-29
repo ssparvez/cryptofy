@@ -5,96 +5,76 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Settings</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-list no-border>
-    <div *ngIf="auth.user | async; then authenticated else guest">
-        <!-- template will replace this div -->
-      </div>
-      <!-- User NOT logged in -->
-      <ng-template #guest>
-        <h3>Sign in to get started...</h3>
-      </ng-template>
-      <!-- User logged in -->
-      <ng-template #authenticated>
-        <div *ngIf="auth.user | async as user">
-            <ion-list-header>
-                Account
-              </ion-list-header>
-            <ion-card>
-                <ion-item>
-                  <ion-avatar item-start>
-                    <img [src]="user.photoURL">
-                  </ion-avatar>
-                  <h2>{{ user.displayName }}</h2>
-                  <p>kajslkjalksj</p>
-                </ion-item>      
-                <ion-card-content>
-                    <button ion-button icon-left clear small (click)="auth.signOut()">
-                        <ion-icon name="exit"></ion-icon>
-                        <div>Sign Out</div>
-                      </button>
-                </ion-card-content>
-              </ion-card>
-        </div>
-      </ng-template>
     <ion-list-header>
-      Classes
+      Account
+    </ion-list-header>
+    <div *ngIf="auth.user | async; then authenticated else guest">
+      <!-- template will replace this div -->
+    </div>
+    <!-- User NOT logged in -->
+    <ng-template #guest>
+      <ion-item no-lines (click)="switchToPortfolio()">
+        <ion-icon name='log-in' item-start></ion-icon>
+        Sign in to get started...
+      </ion-item>
+    </ng-template>
+    <!-- User logged in -->
+    <ng-template #authenticated>
+      <div *ngIf="auth.user | async as user">
+        <ion-card>
+          <ion-item>
+            <ion-avatar item-start>
+              <img [src]="user.photoURL">
+            </ion-avatar>
+            <h2>{{ user.displayName }}</h2>
+            <p *ngIf="user.providerData?.length">{{user.providerData[0].providerId}}</p>
+
+            <button item-end ion-button icon-left clear small (click)="auth.signOut()">
+              <ion-icon name="log-out"></ion-icon>
+              <div>Sign Out</div>
+            </button>
+          </ion-item>
+        </ion-card>
+      </div>
+    </ng-template>
+    <ion-list-header>
+      General
     </ion-list-header>
     <ion-item>
-      <ion-icon name='planet' item-start></ion-icon>
-      Astronomy
-      <ion-note item-end>
-        To the moon
-      </ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-toggle checked="false"></ion-toggle>
-      <ion-label>
-        Muggle Studies
-      </ion-label>
-      <ion-icon name='body' item-start></ion-icon>
-    </ion-item>
-    <ion-item>
       <ion-icon name='leaf' item-start></ion-icon>
-      Herbology
-      <ion-icon name='rose' item-end color="secondary"></ion-icon>
+      <ion-label>Default Currency</ion-label>
+      <ion-select [(ngModel)]="settings.currency" interface="popover" (ionChange)="setCurrency($event)">
+        <ion-option value="usd">U.S. Dollars</ion-option>
+        <ion-option value="bitcoin">Bitcoin</ion-option>
+      </ion-select>
     </ion-item>
     <ion-item>
-      <ion-icon name='flask' item-start></ion-icon>
-      Potions
-      <ion-note item-end>
-        Poisonous
-      </ion-note>
+      <ion-toggle [(ngModel)]="settings.darkMode" (ionChange)="setDarkMode()"></ion-toggle>
+      <ion-label>Dark Mode</ion-label>
+      <ion-icon name='moon' item-start></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-label>Notifications</ion-label>
+      <ion-icon name='notifications' item-start></ion-icon>
+      <ion-toggle [(ngModel)]="settings.notifications"></ion-toggle>
     </ion-item>
   </ion-list>
   <ion-list>
     <ion-list-header>
-      Activities
+      Security
     </ion-list-header>
     <ion-item>
-      Incantation
-      <ion-icon name='color-wand' item-start></ion-icon>
-      <ion-note item-end>Crucio!</ion-note>
-    </ion-item>
-    <ion-item>
-      <ion-toggle checked="true"></ion-toggle>
-      <ion-label>
-        Quidditch Practice
-      </ion-label>
-      <ion-icon name='brush' item-start></ion-icon>
-    </ion-item>
-    <ion-item>
-      <ion-icon name='wine' item-start></ion-icon>
-      Mead Drinking
-      <ion-note item-end>Yes please</ion-note>
+      <ion-label>Require Fingerprint</ion-label>
+      <ion-icon name='finger-print' item-start></ion-icon>
+      <ion-toggle [(ngModel)]="settings.fingerprint"></ion-toggle>
     </ion-item>
   </ion-list>
 </ion-content>

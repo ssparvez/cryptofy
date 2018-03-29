@@ -1,22 +1,29 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding-top>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <span style="float: right; padding-right: 16px; padding-bottom: 4px;">Past 24h</span>
-  <ion-card *ngFor="let coin of coins" (click)="pushPage(coin)">
+  <ion-card *ngFor="let coin of coins" (click)="openNewsPage(coin)">
     <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
       <b>{{coin.name}}</b>
       <span> ({{coin.symbol}})</span>
       <span class="coin-percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">{{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}</span>
     </ion-card-header>
     <ion-card-content>
-      <span class="coin-price">$ {{coin.price_usd}}</span>
+      <ion-row no-padding>
+        <ion-col no-padding>
+          <span class="coin-price">{{currency == 'usd'? ('$ ' + coin.price_usd): ('฿ ' + coin.price_btc)}}</span>
+        </ion-col>
+        <ion-col col-1 no-padding align-self-center>
+          <ion-icon name='star-outline' text-center></ion-icon>
+        </ion-col>
+    </ion-row>
     </ion-card-content>
   </ion-card>
 </ion-content>

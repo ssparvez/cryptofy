@@ -44,15 +44,6 @@ $colors: (
   twitter:    #1DA1F2
 );
 
-// top toolbar
-$toolbar-md-background: color($colors, primary);
-// bottom tabs
-$tabs-md-background: color($colors, light);
-//$tabs-md-tab-color: color($colors, light);
-$tabs-md-tab-color-active: color($colors, dark);
-//$tabs-md-tab-color-inactive: color($colors, light);
-//$tabs-md-tab-text-color: color($colors, light);
-
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

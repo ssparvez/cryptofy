@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { CryptodataProvider } from '../../providers/cryptodata/cryptodata';
+import { CryptoProvider } from '../../providers/cryptodata';
 import { NavParams } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
@@ -12,14 +12,14 @@ export class NewsPage {
   coin: any;
   articles = [];
   
-  constructor(public navCtrl: NavController, private cryptodataProvider: CryptodataProvider, private navParams: NavParams, private iab: InAppBrowser) {
+  constructor(public navCtrl: NavController, private dataProvider: CryptoProvider, private navParams: NavParams, private iab: InAppBrowser) {
     this.coin = this.navParams.get('coin');
     console.log(this.coin.name);
   }
 
   // on page load
   ionViewWillEnter() {
-    this.cryptodataProvider.getCryptoNews(this.coin).subscribe(data => {
+    this.dataProvider.getCoinNews(this.coin).subscribe(data => {
       this.articles = data['articles'];
       console.log(data);
     });

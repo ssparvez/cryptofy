@@ -1,9 +1,11 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TimeAgoPipe } from 'time-ago-pipe';
+import { ChartsModule } from 'ng2-charts';
 
 // pages
 import { PortfolioPage } from '../pages/portfolio/portfolio';
@@ -12,11 +14,11 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
 import { WalletsPage } from '../pages/wallets/wallets';
-
+import { WalletInfoPage } from '../pages/wallet-info/wallet-info';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { CryptodataProvider } from '../providers/cryptodata/cryptodata';
+import { CryptoProvider } from '../providers/cryptodata';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 // firebase
@@ -35,17 +37,20 @@ import { CoreModule } from '../core/core.module';
     NewsPage,
     SettingsPage,
     WalletsPage,
+    WalletInfoPage,
     TabsPage,
     TimeAgoPipe
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     HttpClientModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
-    CoreModule
+    CoreModule,
+    ChartsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -55,13 +60,14 @@ import { CoreModule } from '../core/core.module';
     NewsPage,
     SettingsPage,
     TabsPage,
-    WalletsPage
+    WalletsPage,
+    WalletInfoPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CryptodataProvider,
+    CryptoProvider,
     InAppBrowser
   ]
 })

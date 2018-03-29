@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../core/auth.service';
+import { Storage } from '@ionic/storage';
 
 
 /**
@@ -10,18 +11,47 @@ import { AuthService } from '../../core/auth.service';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService) {
+  settings = {
+    currency: "usd",
+    darkMode: false,
+    fingerprint: false,
+    notifications: true,
+  }
+  
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, public storage: Storage) {
+    this.storage.ready().then(()=> {
+      this.storage.get('darkMode').then((val) => {
+        console.log('Your age is', val);
+        this.settings.darkMode = val;
+      });
+      this.storage.get('currency').then((val) => {
+        console.log('Your age is', val);
+        this.settings.currency = val;
+      });
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
   }
 
+  setDarkMode() {
+    this.storage.set('darkMode', !this.settings.darkMode);
+    console.log(`dark mode set to ${this.settings.darkMode}`);
+  }
+  setCurrency(value: any) {
+    this.storage.set('currency', value);
+    console.log(`currency mode set to ${this.settings.currency}`);
+  }
+
+  switchToPortfolio() {
+    this.navCtrl.parent.select(1);
+  }
 }

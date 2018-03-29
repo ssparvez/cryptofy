@@ -6,9 +6,13 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import { ToastController } from 'ionic-angular';
 
-interface Wallet {
-    coin: string;
-    address: string;
+interface Transaction {
+    coinName: string,
+    coinSymbol: string,
+    amount: number,
+    price: number,
+    type: string,
+
 }
 
 interface User {
@@ -16,18 +20,18 @@ interface User {
   email: string;
   photoURL?: string;
   displayName?: string;
-  favoriteColor?: string;
-  wallets?: Wallet[];
+  // transactions?: Transaction[],
+  // favoriteCoins: Coin[]
 }
 @Injectable()
 export class AuthService {
-  user: Observable < User > ;
+  user: Observable <User> ;
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, public toastCtrl: ToastController) {
     //// Get auth data, then get firestore user document || null
     this.user = this.afAuth.authState
       .switchMap(user => {
         if (user) {
-          return this.afs.doc < User > (`users/${user.uid}`).valueChanges()
+          return this.afs.doc <User> (`users/${user.uid}`).valueChanges()
         } else {
           return Observable.of(null)
         }
@@ -35,14 +39,16 @@ export class AuthService {
   }
   signIn(social: string) {
     var provider;
-    if(social == "google") {
+    switch(social) {
+      case 'google':  
         provider = new firebase.auth.GoogleAuthProvider();
-    }
-    else if(social == "facebook") {
+        break;
+      case 'facebook':  
         provider = new firebase.auth.FacebookAuthProvider();
-    }
-    else if(social == "twitter") {
+        break;
+      case 'twitter': 
         provider = new firebase.auth.TwitterAuthProvider();
+        break;
     }
     return this.oAuthLogin(provider);
   }
@@ -69,14 +75,14 @@ export class AuthService {
   }
   private updateUserData(user) {
     // Sets user data to firestore on login
-    const userRef: AngularFirestoreDocument < any > = this.afs.doc(`users/${user.uid}`);
+    const userRef: AngularFirestoreDocument <any> = this.afs.doc(`users/${user.uid}`);
     const data: User = {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL
-    }
-    return userRef.set(data)
+    };
+    return userRef.set(data, {merge: true});
   }
   signOut() {
     this.afAuth.auth.signOut();
