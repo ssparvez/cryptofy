@@ -1,16 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ModalController } from 'ionic-angular';
 import { WalletInfoPage } from '../wallet-info/wallet-info';
 import { CryptoProvider } from '../../providers/cryptodata';
-
-
-/**
- * Generated class for the WalletsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -39,5 +30,4 @@ export class WalletsPage {
       coin: coin
     });
   }
-
 }
