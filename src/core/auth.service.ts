@@ -5,26 +5,21 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import { ToastController } from 'ionic-angular';
+import { User } from '../models/user';
 
-interface User {
-  uid: string;
-  email: string;
-  photoURL?: string;
-  displayName?: string;
-  // favoriteCoins: Coin[]
-}
 @Injectable()
 export class AuthService {
   user: Observable <User> ;
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore, public toastCtrl: ToastController) {
+
+  constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, public toastCtrl: ToastController) {
     //// Get auth data, then get firestore user document || null
     this.user = this.afAuth.authState
       .switchMap(user => {
-        if(user) return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
-        else return Observable.of(null)
-        
+        if(user) return this.db.doc<User>(`users/${user.uid}`).valueChanges()
+        else return Observable.of(null);
       })
   }
+
   signIn(social: string) {
     var provider;
     switch(social) {
@@ -61,9 +56,10 @@ export class AuthService {
         toast.present();
       });
   }
+
   private updateUserData(user) {
     // Sets user data to firestore on login
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+    const userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
     const data: User = {
       uid: user.uid,
       email: user.email,
@@ -72,6 +68,7 @@ export class AuthService {
     };
     return userRef.set(data, {merge: true});
   }
+  
   signOut() {
     this.afAuth.auth.signOut();
     const toast = this.toastCtrl.create({
