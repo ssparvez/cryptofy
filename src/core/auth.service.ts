@@ -6,15 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import { ToastController } from 'ionic-angular';
 
-interface Transaction {
-    coinName: string,
-    coinSymbol: string,
-    amount: number,
-    price: number,
-    type: string,
-
-}
-
 interface User {
   uid: string;
   email: string;
@@ -54,7 +45,7 @@ export class AuthService {
   }
 
   private oAuthLogin(provider) {
-    return this.afAuth.auth.signInWithRedirect(provider)
+    return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.updateUserData(credential.user);
         let toast = this.toastCtrl.create({

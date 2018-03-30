@@ -1,53 +1,55 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>Add {{coin.name}} transaction</ion-title>
+    <ion-title>Add transaction</ion-title>
     <ion-buttons end>
-        <button ion-button icon-only (click)="closeModal()">
-          <ion-icon name="close"></ion-icon>
-        </button>
-      </ion-buttons>
+      <button ion-button icon-only (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <ion-list radio-group [(ngModel)]="relationship">
-        <ion-list-header>
-          Transaction Type
-        </ion-list-header>
-        <ion-item>
-          <ion-label>Buy</ion-label>
-          <ion-radio value="buy" checked></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Sell</ion-label>
-          <ion-radio value="sell"></ion-radio>
-        </ion-item>
+  <form [formGroup]="transactionForm" (ngSubmit)="addTransaction()">
+    <ion-list radio-group formControlName="type">
+      <ion-list-header>
+        Transaction Type
+        <ion-note float-right>({{coin.name}})</ion-note>
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Buy</ion-label>
+        <ion-radio value="buy" checked></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Sell</ion-label>
+        <ion-radio value="sell"></ion-radio>
+      </ion-item>
     </ion-list>
     <ion-list>
-        <ion-list-header>
-            Transaction Details
-        </ion-list-header>
-      </ion-list>
-        <ion-grid no-padding>
-          <ion-row>
-            <ion-col>
-                <ion-item>
-                    <ion-label color="primary" stacked>Total Amount</ion-label>
-                    <ion-input type="number"></ion-input>
-                </ion-item>
-              </ion-col>
-              <ion-col align-self-center text-center col-1>
-                @
-              </ion-col>
-              <ion-col>
-                <ion-item>
-                    <ion-label color="primary" stacked>Price</ion-label>
-                    <ion-input type="number"></ion-input>
-                </ion-item>
-            </ion-col>
-          </ion-row>
-          <ion-row margin-top padding-horizontal>
-            <button ion-button full>Submit</button>
-          </ion-row>
-        </ion-grid>
+      <ion-list-header>
+        Transaction Details
+      </ion-list-header>
+    </ion-list>
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label color="primary" stacked>Total Amount</ion-label>
+            <ion-input type="number" formControlName="amount"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col align-self-center text-center col-1>@</ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label color="primary" stacked>Price</ion-label>
+            <ion-input type="number" formControlName="price"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row margin-top padding-horizontal>
+        <button ion-button full [disabled]="!transactionForm.valid">Submit</button>
+      </ion-row>
+      <ion-note text-center>* All fields are required.</ion-note>
+    </ion-grid>
+  </form>
 </ion-content>
