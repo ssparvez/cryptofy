@@ -18,15 +18,17 @@ export class HomePage {
   }
   // on page load
   ionViewWillEnter() {
-     // load settings
-     this.storage.ready().then(()=> {
-      this.storage.get('currency').then((val) => {
-        console.log('Your age is', val);
-        this.currency = val;
-        this.dataProvider.getCoinList().subscribe(data => {
-          console.log(data);
-          this.coins = data
-        });
+     // load coin market cap data
+     this.dataProvider.getCoinList().subscribe(data => {
+      console.log(data);
+      this.coins = data;
+      // load the currency preference
+      this.storage.ready().then(()=> {
+        this.storage.get('currency').then((val) => {
+          console.log('Your curr is', val);
+          // problem when storage value not set
+          //this.currency = val; 
+        })
       });
     });
   }
@@ -42,7 +44,7 @@ export class HomePage {
     setTimeout(() => {
       console.log('Async operation has ended');
       refresher.complete();
-    }, 2000);
+    }, 1000);
   }
 
   openNewsPage(coin){

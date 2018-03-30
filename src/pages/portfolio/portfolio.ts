@@ -32,9 +32,9 @@ export class PortfolioPage {
     }
   }
 
-  constructor(public navCtrl: NavController, db: AngularFirestore, public auth: AuthService) {
+  constructor(public navCtrl: NavController, afs: AngularFirestore, public auth: AuthService) {
     console.log(auth.user);
-    this.itemsCollection = db.collection('items');
+    this.itemsCollection = afs.collection('items');
     this.items = this.itemsCollection.valueChanges();
     console.log(this.items);
 
