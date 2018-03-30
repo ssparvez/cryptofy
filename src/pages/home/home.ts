@@ -14,7 +14,6 @@ export class HomePage {
   currency = "usd";
 
   constructor(public navCtrl: NavController, private dataProvider: CryptoProvider, public storage: Storage, public toastCtrl: ToastController) {
-   
   }
   // on page load
   ionViewWillEnter() {
@@ -23,7 +22,7 @@ export class HomePage {
       console.log(data);
       this.coins = data;
       // load the currency preference
-      this.storage.ready().then(()=> {
+      this.storage.ready().then(() => {
         this.storage.get('currency').then((val) => {
           console.log('Your curr is', val);
           // problem when storage value not set
@@ -34,12 +33,11 @@ export class HomePage {
   }
 
   // on page refresh
-  doRefresh(refresher) {
+  refreshCoinList(refresher) {
     console.log('Begin async operation', refresher);
     this.dataProvider.getCoinList().subscribe(data => {
       console.log(data);
       this.coins = data;
-      
     },
     error => {
       console.log("Error: ", error);
@@ -55,6 +53,10 @@ export class HomePage {
       console.log("Async operation has ended");
       refresher.complete();
     });
+  }
+
+  addToFavorites(coinSymbol) {
+    console.log(`adding ${coinSymbol} to favorites`);
   }
 
   openNewsPage(coin) {

@@ -18,6 +18,9 @@ export class SettingsPage {
   
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, public storage: Storage) {
+  }
+
+  ionViewWillEnter() {
     this.storage.ready().then(()=> {
       this.storage.get('darkMode').then((val) => {
         console.log('Your age is', val);
@@ -28,10 +31,6 @@ export class SettingsPage {
         this.settings.currency = val;
       });
     });
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
   }
 
   setDarkMode() {

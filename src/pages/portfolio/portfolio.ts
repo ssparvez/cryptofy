@@ -27,20 +27,28 @@ export class PortfolioPage {
     }
   }
 
-  constructor(public navCtrl: NavController, db: AngularFirestore, public auth: AuthService) {
-    auth.user.subscribe((user)=> {
+  showSpinner = true;
+
+  constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService) {
+    this.auth.user.subscribe((user)=> {
       console.log(user.uid);
-      this.transactionCollection = db.collection('transactions', ref => ref.where('userId', '==', user.uid));
+      this.showSpinner = false;
+      this.transactionCollection = this.db.collection('transactions', ref => ref.where('userId', '==', user.uid));
       this.transactions = this.transactionCollection.valueChanges();
       console.log(this.transactions);
+      this.transactions.subscribe((val) => {
+        // calculate values
+        val.forEach((transaction)=> console.log(transaction));
+      })
     });
     // check out https://coursetro.com/posts/code/126/Let's-build-an-Angular-5-Chart.js-App---Tutorial
     // to hook up api data
     
   }
-
   ionViewDidLoad() {
     
+  }
+  ionViewWillEnter() {
   }
 
   displayWallets() {

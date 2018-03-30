@@ -5,4 +5,4 @@ export interface Transaction {
     amount: number,
     price: number,
     type: string,
-  }
+}

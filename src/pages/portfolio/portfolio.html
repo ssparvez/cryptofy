@@ -7,30 +7,36 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="auth.user | async; then authenticated else guest">
+  <div *ngIf="auth.user | async; then authenticated else notAuthenticated">
     <!-- template will replace this div -->
   </div>
   <!-- User NOT logged in -->
-  <ng-template #guest>
-    <h3 text-center>Sign in to get started...</h3>
-    <ion-list no-border>
-      <ion-item (click)="auth.signIn('google')">
-        <ion-icon name='logo-google' item-start color="google"></ion-icon>
-        <ion-label color="google">Google</ion-label>
-      </ion-item>
-      <ion-item (click)="auth.signIn('facebook')">
-        <ion-icon name='logo-facebook' item-start color="facebook"></ion-icon>
-        <ion-label color="facebook">Facebook</ion-label>
-      </ion-item>
-      <ion-item (click)="auth.signIn('twitter')">
-        <ion-icon name='logo-twitter' item-start color="twitter"></ion-icon>
-        <ion-label color="twitter">Twitter</ion-label>
-      </ion-item>
-    </ion-list>
+  <ng-template #notAuthenticated>
+    <div class="spinner" *ngIf="showSpinner; else signIn">
+      <div class="dot1"></div>
+      <div class="dot2"></div>
+    </div>
+    <ng-template #signIn>
+      <h3 text-center>Sign in to get started...</h3>
+      <ion-list no-border>
+        <ion-item (click)="auth.signIn('google')">
+          <ion-icon name='logo-google' item-start color="google"></ion-icon>
+          <ion-label color="google">Google</ion-label>
+        </ion-item>
+        <ion-item (click)="auth.signIn('facebook')">
+          <ion-icon name='logo-facebook' item-start color="facebook"></ion-icon>
+          <ion-label color="facebook">Facebook</ion-label>
+        </ion-item>
+        <ion-item (click)="auth.signIn('twitter')">
+          <ion-icon name='logo-twitter' item-start color="twitter"></ion-icon>
+          <ion-label color="twitter">Twitter</ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-template>
   </ng-template>
   <!-- User logged in -->
   <ng-template #authenticated>
-    <div *ngIf="auth.user | async as user">
+    <div *ngIf="auth.user | async as user;">
       <div *ngIf="!transactions" text-center style="margin-top: 75px;">
         <h3 ion-text color="secondary" style="font-weight:700;">Your portfolio is hungry.</h3>
         <img src="../../assets/imgs/donut.jpg" padding-horizontal margin-top>
@@ -38,12 +44,8 @@
       </div>
       <div *ngIf="transactions">
         <h1 padding-horizontal style="font-weight: 700;">Value: $100</h1>
-        <canvas baseChart style="margin-top: 25px;"
-              [data]="chart.data"
-              [chartType]="chart.type"
-              [labels]="chart.labels"
-              [colors]="chart.colors"
-              [options]="chart.options">
+        <canvas baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
+          [options]="chart.options">
         </canvas>
         <ion-list>
           <ion-item *ngFor="let transaction of transactions | async">
@@ -52,7 +54,9 @@
         </ion-list>
       </div>
       <ion-fab right bottom>
-        <button ion-fab color="secondary" (click)="displayWallets()"><ion-icon name="add"></ion-icon></button>
+        <button ion-fab color="secondary" (click)="displayWallets()">
+          <ion-icon name="add"></ion-icon>
+        </button>
       </ion-fab>
     </div>
   </ng-template>

@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding-top>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="refreshCoinList($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <span style="float: right; padding-right: 16px; padding-bottom: 4px;">Past 24h</span>
@@ -21,7 +21,7 @@
           <span class="coin-price">{{currency == 'usd'? ('$ ' + coin.price_usd): ('฿ ' + coin.price_btc)}}</span>
         </ion-col>
         <ion-col col-1 no-padding align-self-center>
-          <ion-icon name='star-outline' float-right></ion-icon>
+          <ion-icon name='star-outline' float-right style="font-size: 24px;" (click)="addToFavorites(coin.symbol)"></ion-icon>
         </ion-col>
     </ion-row>
     </ion-card-content>

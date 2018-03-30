@@ -12,12 +12,11 @@ export class AuthService {
   user: Observable <User> ;
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, public toastCtrl: ToastController) {
-    //// Get auth data, then get firestore user document || null
-    this.user = this.afAuth.authState
-      .switchMap(user => {
-        if(user) return this.db.doc<User>(`users/${user.uid}`).valueChanges()
-        else return Observable.of(null);
-      })
+    // Get auth data, then get firestore user document || null
+    this.user = this.afAuth.authState.switchMap(user => {
+      if(user) return this.db.doc<User>(`users/${user.uid}`).valueChanges()
+      else return Observable.of(null);
+    })
   }
 
   signIn(social: string) {
