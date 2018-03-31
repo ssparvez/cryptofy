@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, ActionSheetController } from 'ionic-angular';
 import { CryptoProvider } from '../../providers/cryptodata';
 import { NewsPage } from '../news/news';
 import { Storage } from '@ionic/storage';
@@ -13,12 +13,15 @@ export class HomePage {
   coins: any;
   currency = "usd";
 
-  constructor(public navCtrl: NavController, private dataProvider: CryptoProvider, public storage: Storage, public toastCtrl: ToastController) {
+  showSpinner = true;
+
+  constructor(public navCtrl: NavController, private dataProvider: CryptoProvider, public storage: Storage, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController) {
   }
   // on page load
   ionViewWillEnter() {
      // load coin market cap data
      this.dataProvider.getCoinList().subscribe(data => {
+      this.showSpinner = false;
       console.log(data);
       this.coins = data;
       // load the currency preference
@@ -62,5 +65,28 @@ export class HomePage {
   openNewsPage(coin) {
     // push another page onto the navigation stack
     this.navCtrl.push(NewsPage, {coin: coin});
+  }
+
+  openCoinOptions(coin) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: `${coin.name} options`,
+      buttons: [
+        {
+          text: 'Favorite',
+          icon: 'star',
+          role: 'destructive',
+          handler: () => this.addToFavorites(coin.symbol)
+        },{
+          text: 'Archive',
+          handler: () => console.log('Archive clicked')
+        },{
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => console.log('Cancel clicked')
+        }
+      ]
+    });
+    actionSheet.present();
   }
 }

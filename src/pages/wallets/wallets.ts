@@ -26,8 +26,6 @@ export class WalletsPage {
   }
 
   openWalletInfoPage(coin) {
-    this.navCtrl.push(WalletInfoPage, {
-      coin: coin
-    });
+    this.navCtrl.push(WalletInfoPage, {coin});
   }
 }

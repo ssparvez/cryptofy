@@ -45,4 +45,8 @@ export class SettingsPage {
   switchToPortfolio() {
     this.navCtrl.parent.select(1);
   }
+
+  removeAccount() {
+    
+  }
 }

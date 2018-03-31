@@ -13,9 +13,12 @@ export class CryptoProvider {
   dataUrl = "https://api.coinmarketcap.com/v1/ticker/?limit=100";
   newsUrl = 'https://newsapi.org/v2';
   constructor(public http: HttpClient) {
-    console.log('Hello CryptodataProvider Provider');
-    
+  }
 
+  getPortfolioCoins(coinSymbols) {
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coinSymbols}&tsyms=USD`;
+    console.log("coin symbol url" + url);
+    return this.http.get(url);
   }
 
   getCoinList() {

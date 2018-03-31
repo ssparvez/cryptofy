@@ -8,22 +8,29 @@
   <ion-refresher (ionRefresh)="refreshCoinList($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <span style="float: right; padding-right: 16px; padding-bottom: 4px;">Past 24h</span>
-  <ion-card *ngFor="let coin of coins" (click)="openNewsPage(coin)">
-    <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
-      <b>{{coin.name}}</b>
-      <span> ({{coin.symbol}})</span>
-      <span class="coin-percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">{{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}</span>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-row no-padding>
-        <ion-col no-padding>
-          <span class="coin-price">{{currency == 'usd'? ('$ ' + coin.price_usd): ('฿ ' + coin.price_btc)}}</span>
-        </ion-col>
-        <ion-col col-1 no-padding align-self-center>
-          <ion-icon name='star-outline' float-right style="font-size: 24px;" (click)="addToFavorites(coin.symbol)"></ion-icon>
-        </ion-col>
-    </ion-row>
-    </ion-card-content>
-  </ion-card>
+  <div class="spinner" *ngIf="showSpinner; else showCoins">
+    <div class="dot1"></div>
+    <div class="dot2"></div>
+  </div>
+  <ng-template #showCoins>
+    <span style="float: right; padding-right: 16px; padding-bottom: 4px;">Past 24h</span>
+    <ion-card *ngFor="let coin of coins" (tap)="openNewsPage(coin)" (press)="openCoinOptions(coin)">
+      <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
+        <b>{{coin.name}}</b>
+        <span> ({{coin.symbol}})</span>
+        <span class="coin-percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">{{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}</span>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row no-padding>
+          <ion-col no-padding>
+            <span class="coin-price">{{currency == 'usd'? ('$ ' + coin.price_usd): ('฿ ' + coin.price_btc)}}</span>
+          </ion-col>
+          <ion-col col-1 no-padding align-self-center>
+            <ion-icon name='star-outline' float-right style="font-size: 24px;" (tap)="addToFavorites(coin.symbol)"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
 </ion-content>

@@ -13,7 +13,7 @@
     </div>
     <!-- User NOT logged in -->
     <ng-template #guest>
-      <ion-item no-lines (click)="switchToPortfolio()">
+      <ion-item no-lines (tap)="switchToPortfolio()">
         <ion-icon name='log-in' item-start></ion-icon>
         Sign in to get started...
       </ion-item>
@@ -29,7 +29,7 @@
             <h2>{{ user.displayName }}</h2>
             <p *ngIf="user.providerData?.length">{{user.providerData[0].providerId}}</p>
 
-            <button item-end ion-button icon-left clear small (click)="auth.signOut()">
+            <button item-end ion-button icon-left clear small (tap)="auth.signOut()">
               <ion-icon name="log-out"></ion-icon>
               <div>Sign Out</div>
             </button>
@@ -69,4 +69,7 @@
       <ion-toggle [(ngModel)]="settings.fingerprint"></ion-toggle>
     </ion-item>
   </ion-list>
+  <ion-row margin-top padding-horizontal *ngIf="auth.user | async as user">
+      <button ion-button color="danger" full (tap)="removeAccount()">Remove Account</button>
+  </ion-row>
 </ion-content>

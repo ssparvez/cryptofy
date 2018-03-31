@@ -4,7 +4,9 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
 import { WalletsPage } from '../wallets/wallets';
-import { Transaction } from '../../models/transaction';
+import { Holding } from '../../models/holding';
+import { User } from '../../models/user';
+import { CryptoProvider } from '../../providers/cryptodata';
 
 
 @Component({
@@ -12,13 +14,13 @@ import { Transaction } from '../../models/transaction';
   templateUrl: 'portfolio.html'
 })
 export class PortfolioPage {
-  transactionCollection: AngularFirestoreCollection<Transaction>;
-  transactions: Observable<Transaction[]>;
+  holdingCollection: AngularFirestoreCollection<Holding>;
+  holdings: Observable<Holding[]>;
 
   chart = {
     type: 'doughnut',
-    labels: ['Bitcoin', 'Ethereum', 'Litecoin', 'Bitcoin Cash'],
-    data: [8940000, 5000000, 1000000, 300000],
+    labels: [],
+    data: [],
     colors:  [{ backgroundColor: ['#5628B4', '#D80E70', '#E7455F', '#F7B236'] }],
     options: {
       legend: { display: false },
@@ -29,21 +31,43 @@ export class PortfolioPage {
 
   showSpinner = true;
 
-  constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService) {
+  constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, public cryptoProvider: CryptoProvider) {
     this.auth.user.subscribe((user)=> {
-      console.log(user.uid);
       this.showSpinner = false;
-      this.transactionCollection = this.db.collection('transactions', ref => ref.where('userId', '==', user.uid));
-      this.transactions = this.transactionCollection.valueChanges();
-      console.log(this.transactions);
-      this.transactions.subscribe((val) => {
+      console.log(user.uid);
+      this.holdingCollection = this.db.collection('holdings', ref => ref.where('userId', '==', user.uid));
+      // use snapshot changes to get id of each doc for deletion
+      this.holdings = this.holdingCollection.snapshotChanges().map(changes => {
+         return changes.map(a => {
+           const data = a.payload.doc.data() as Holding;
+           data.id = a.payload.doc.id;
+           return data;
+         })
+      });
+      console.log(this.holdings);
+      this.holdings.subscribe((val) => {
         // calculate values
-        val.forEach((transaction)=> console.log(transaction));
+        let coinSymbols = [];
+        // collect symbols to query cryptocompare api
+        val.forEach(holding => {
+          console.log(holding);
+          coinSymbols.push(holding.coinSymbol);
+          holding.value = 12321;
+        });
+        this.cryptoProvider.getPortfolioCoins(coinSymbols).subscribe(data => {
+          console.log(data);
+          this.chart.data = [];
+          val.forEach(holding => {
+            let price = data['DISPLAY'][holding.coinSymbol]['USD']['PRICE'].replace('$ ', '').replace(',', '');
+            console.log(parseFloat(price));
+            holding.value = holding.amount * parseFloat(price); // calculate current value
+            console.log(holding.coinName + " value: " + holding.value);
+            this.chart.data.push(holding.value);
+            this.chart.labels.push(holding.coinName);
+          });
+        });
       })
     });
-    // check out https://coursetro.com/posts/code/126/Let's-build-an-Angular-5-Chart.js-App---Tutorial
-    // to hook up api data
-    
   }
   ionViewDidLoad() {
     
@@ -53,5 +77,10 @@ export class PortfolioPage {
 
   displayWallets() {
     this.navCtrl.push(WalletsPage);
+  }
+
+  removeHolding(holding) {
+    console.log(holding);
+    this.db.doc(`holdings/${holding.id}`).delete();
   }
 }

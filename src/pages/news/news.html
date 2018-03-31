@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let article of articles" (click)="openBrowser(article.url)">
+  <ion-card *ngFor="let article of articles" (tap)="openBrowser(article.url)">
     <ion-item>
       <h2 text-nowrap style="font-weight: bold;">{{article?.title}}</h2>
       <p *ngIf="article.author">by {{article.author}}</p>
