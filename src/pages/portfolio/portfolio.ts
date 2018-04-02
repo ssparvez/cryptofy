@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
 import { WalletsPage } from '../wallets/wallets';
 import { Holding } from '../../models/holding';
-import { User } from '../../models/user';
 import { CryptoProvider } from '../../providers/cryptodata';
 
 
@@ -30,6 +29,7 @@ export class PortfolioPage {
   }
 
   showSpinner = true;
+  totalValue = 0;
 
   constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, public cryptoProvider: CryptoProvider) {
     this.auth.user.subscribe((user)=> {
@@ -57,13 +57,16 @@ export class PortfolioPage {
         this.cryptoProvider.getPortfolioCoins(coinSymbols).subscribe(data => {
           console.log(data);
           this.chart.data = [];
+          this.totalValue = 0;
           val.forEach(holding => {
             let price = data['DISPLAY'][holding.coinSymbol]['USD']['PRICE'].replace('$ ', '').replace(',', '');
             console.log(parseFloat(price));
             holding.value = holding.amount * parseFloat(price); // calculate current value
+            this.totalValue += holding.value;
             console.log(holding.coinName + " value: " + holding.value);
             this.chart.data.push(holding.value);
             this.chart.labels.push(holding.coinName);
+
           });
         });
       })

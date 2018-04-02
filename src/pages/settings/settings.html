@@ -70,6 +70,6 @@
     </ion-item>
   </ion-list>
   <ion-row margin-top padding-horizontal *ngIf="auth.user | async as user">
-      <button ion-button color="danger" full (tap)="removeAccount()">Remove Account</button>
+      <button ion-button color="danger" full (tap)="showConfirm()">Remove Account</button>
   </ion-row>
 </ion-content>

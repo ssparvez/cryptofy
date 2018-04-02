@@ -43,7 +43,7 @@
         <h5 style="color: grey; font-weight:300" margin-top>Add holdings to feed it.</h5>
       </div>
       <div *ngIf="holdings">
-        <h1 padding-horizontal style="font-weight: 700;">Value: $100</h1>
+        <h1 padding-horizontal style="font-weight: 700;">Value: {{totalValue | currency}}</h1>
         <canvas *ngIf="chart.data" baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
           [options]="chart.options">
         </canvas>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AuthService } from '../../core/auth.service';
 import { Storage } from '@ionic/storage';
 
@@ -17,7 +17,7 @@ export class SettingsPage {
   }
   
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, public storage: Storage, public alertCtrl: AlertController) {
   }
 
   ionViewWillEnter() {
@@ -46,7 +46,29 @@ export class SettingsPage {
     this.navCtrl.parent.select(1);
   }
 
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Remove Account?',
+      message: 'All portfolio data will be destroyed and account will be unlinked.',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+            console.log('Agree clicked');
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   removeAccount() {
-    
+
   }
 }

@@ -72,13 +72,18 @@ export class HomePage {
       title: `${coin.name} options`,
       buttons: [
         {
-          text: 'Favorite',
+          text: 'Add to Favorites',
           icon: 'star',
           role: 'destructive',
           handler: () => this.addToFavorites(coin.symbol)
         },{
-          text: 'Archive',
-          handler: () => console.log('Archive clicked')
+          text: 'Add to Portfolio',
+          icon: 'pie',
+          handler: () => console.log('Pie clicked')
+        },{
+          text: 'See News',
+          icon: 'paper',
+          handler: () => this.openNewsPage(coin)
         },{
           text: 'Cancel',
           icon: 'close',
