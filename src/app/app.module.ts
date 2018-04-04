@@ -14,7 +14,7 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
 import { WalletsPage } from '../pages/wallets/wallets';
-import { WalletInfoPage } from '../pages/wallet-info/wallet-info';
+import { HoldingInfoPage } from '../pages/holding-info/holding-info';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -37,7 +37,7 @@ import { CoreModule } from '../core/core.module';
     NewsPage,
     SettingsPage,
     WalletsPage,
-    WalletInfoPage,
+    HoldingInfoPage,
     TabsPage,
     TimeAgoPipe
   ],
@@ -61,7 +61,7 @@ import { CoreModule } from '../core/core.module';
     SettingsPage,
     TabsPage,
     WalletsPage,
-    WalletInfoPage
+    HoldingInfoPage
   ],
   providers: [
     StatusBar,

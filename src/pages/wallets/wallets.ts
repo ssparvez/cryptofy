@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { WalletInfoPage } from '../wallet-info/wallet-info';
+import { HoldingInfoPage } from '../holding-info/holding-info';
 import { CryptoProvider } from '../../providers/cryptodata';
 
 @IonicPage()
@@ -10,11 +10,13 @@ import { CryptoProvider } from '../../providers/cryptodata';
 })
 export class WalletsPage {
   coins: any;
+  coinSymbols: string[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: CryptoProvider) {
   }
 
   ionViewWillEnter() {
+    this.coinSymbols = this.navParams.get('coinSymbols');
     this.dataProvider.getCoinList().subscribe(data => {
       console.log(data);
       this.coins = data
@@ -26,6 +28,6 @@ export class WalletsPage {
   }
 
   openWalletInfoPage(coin) {
-    this.navCtrl.push(WalletInfoPage, {coin});
+    this.navCtrl.push(HoldingInfoPage, {coin, type: 'Add'});
   }
 }

@@ -47,10 +47,12 @@
         <canvas *ngIf="chart.data" baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
           [options]="chart.options">
         </canvas>
-        <ion-list>
+        <ion-list margin-top>
             <ion-item-sliding #item *ngFor="let holding of holdings | async">
-                <ion-item>
-                    <strong>{{holding.coinName}}:</strong> {{holding.value}}
+                <ion-item [ngStyle]="{'border-left': '10px solid' + chart.colors[0].backgroundColor[holding.index]}" (tap)="displayHoldingInfo(holding)">
+                    <strong>{{holding.coinName}}:</strong>
+                    <ion-note text-center>{{holding.amount}} {{holding.coinSymbol}}</ion-note>
+                    <span item-end>{{chart.data[holding.index] | currency}}</span>
                 </ion-item>
                 <ion-item-options side="right">
                   <button ion-button color="danger" (click)="removeHolding(holding)">
@@ -60,7 +62,7 @@
                 </ion-item-options>
               </ion-item-sliding>
         </ion-list>
-        <ion-note text-center>* Update your holdings if you make transactions.</ion-note>
+        <ion-note text-center>* Update your holdings as you make transactions.</ion-note>
       </div>
       <ion-fab right bottom>
         <button ion-fab color="secondary" (tap)="displayWallets()">

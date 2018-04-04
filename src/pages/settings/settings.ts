@@ -52,16 +52,12 @@ export class SettingsPage {
       message: 'All portfolio data will be destroyed and account will be unlinked.',
       buttons: [
         {
-          text: 'Disagree',
-          handler: () => {
-            console.log('Disagree clicked');
-          }
+          text: 'Cancel',
+          handler: () => console.log('Disagree clicked')
         },
         {
-          text: 'Agree',
-          handler: () => {
-            console.log('Agree clicked');
-          }
+          text: 'Ok',
+          handler: () => this.removeAccount()
         }
       ]
     });
@@ -69,6 +65,6 @@ export class SettingsPage {
   }
 
   removeAccount() {
-
+    console.log('Removing account...');
   }
 }

@@ -5,4 +5,5 @@ export interface Holding {
     coinSymbol: string,
     value?: number,
     amount: number,
+    index?: number;
 }

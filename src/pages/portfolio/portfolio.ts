@@ -6,6 +6,7 @@ import { AuthService } from '../../core/auth.service';
 import { WalletsPage } from '../wallets/wallets';
 import { Holding } from '../../models/holding';
 import { CryptoProvider } from '../../providers/cryptodata';
+import { HoldingInfoPage } from '../holding-info/holding-info';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class PortfolioPage {
 
   showSpinner = true;
   totalValue = 0;
+  coinSymbols = [];
 
   constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, public cryptoProvider: CryptoProvider) {
     this.auth.user.subscribe((user)=> {
@@ -38,23 +40,22 @@ export class PortfolioPage {
       this.holdingCollection = this.db.collection('holdings', ref => ref.where('userId', '==', user.uid));
       // use snapshot changes to get id of each doc for deletion
       this.holdings = this.holdingCollection.snapshotChanges().map(changes => {
-         return changes.map(a => {
+         return changes.map((a, index) => {
            const data = a.payload.doc.data() as Holding;
            data.id = a.payload.doc.id;
+           data.index = index;
            return data;
          })
       });
-      console.log(this.holdings);
       this.holdings.subscribe((val) => {
         // calculate values
-        let coinSymbols = [];
+        this.coinSymbols = [];
         // collect symbols to query cryptocompare api
         val.forEach(holding => {
           console.log(holding);
-          coinSymbols.push(holding.coinSymbol);
-          holding.value = 12321;
+          this.coinSymbols.push(holding.coinSymbol);
         });
-        this.cryptoProvider.getPortfolioCoins(coinSymbols).subscribe(data => {
+        this.cryptoProvider.getPortfolioCoins(this.coinSymbols).subscribe(data => {
           console.log(data);
           this.chart.data = [];
           this.totalValue = 0;
@@ -64,12 +65,11 @@ export class PortfolioPage {
             holding.value = holding.amount * parseFloat(price); // calculate current value
             this.totalValue += holding.value;
             console.log(holding.coinName + " value: " + holding.value);
-            this.chart.data.push(holding.value);
+            this.chart.data.push(holding.value.toFixed(2));
             this.chart.labels.push(holding.coinName);
-
           });
         });
-      })
+      });
     });
   }
   ionViewDidLoad() {
@@ -79,7 +79,15 @@ export class PortfolioPage {
   }
 
   displayWallets() {
-    this.navCtrl.push(WalletsPage);
+    this.navCtrl.push(WalletsPage, { coinSymbols: this.coinSymbols});
+  }
+
+  displayHoldingInfo(holding) {
+    let coin = {
+      name: holding.coinName,
+      symbol: holding.coinSymbol
+    }
+    this.navCtrl.push(HoldingInfoPage, {coin, amount: holding.amount, type: 'Edit', holdingId: holding.id});
   }
 
   removeHolding(holding) {

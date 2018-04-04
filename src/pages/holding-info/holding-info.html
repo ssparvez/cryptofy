@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>Add holding</ion-title>
+    <ion-title>{{formType}} holding</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (tap)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="holdingForm" (ngSubmit)="addHolding()">
+  <form [formGroup]="holdingForm" (ngSubmit)="submitHolding()">
     <ion-list>
       <ion-list-header>
         Holding Details
