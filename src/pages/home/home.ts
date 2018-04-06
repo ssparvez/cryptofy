@@ -12,7 +12,6 @@ import { Storage } from '@ionic/storage';
 export class HomePage {
   coins: any;
   currency = "usd";
-
   showSpinner = true;
 
   constructor(public navCtrl: NavController, private dataProvider: CryptoProvider, public storage: Storage, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController) {
@@ -29,7 +28,9 @@ export class HomePage {
         this.storage.get('currency').then((val) => {
           console.log('Your curr is', val);
           // problem when storage value not set
-          //this.currency = val; 
+          if(val !== null && val !== undefined && val.length !== 0) {
+            this.currency = val; 
+          }
         })
       });
     });

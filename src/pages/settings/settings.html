@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list no-border>
+  <ion-list no-border no-lines>
     <ion-list-header>
       Account
     </ion-list-header>
@@ -41,10 +41,10 @@
       General
     </ion-list-header>
     <ion-item>
-      <ion-icon name='leaf' item-start></ion-icon>
+      <ion-icon name='globe' item-start></ion-icon>
       <ion-label>Default Currency</ion-label>
       <ion-select [(ngModel)]="settings.currency" interface="popover" (ionChange)="setCurrency($event)">
-        <ion-option value="usd">U.S. Dollars</ion-option>
+        <ion-option value="usd">Dollars</ion-option>
         <ion-option value="bitcoin">Bitcoin</ion-option>
       </ion-select>
     </ion-item>
@@ -59,7 +59,7 @@
       <ion-toggle [(ngModel)]="settings.notifications"></ion-toggle>
     </ion-item>
   </ion-list>
-  <ion-list>
+  <ion-list no-lines>
     <ion-list-header>
       Security
     </ion-list-header>

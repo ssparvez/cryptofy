@@ -5,10 +5,10 @@ import { CryptoProvider } from '../../providers/cryptodata';
 
 @IonicPage()
 @Component({
-  selector: 'page-wallets',
-  templateUrl: 'wallets.html',
+  selector: 'page-coin-selection',
+  templateUrl: 'coin-selection.html',
 })
-export class WalletsPage {
+export class CoinSelectionPage {
   coins: any;
   coinSymbols: string[];
 
@@ -17,9 +17,11 @@ export class WalletsPage {
 
   ionViewWillEnter() {
     this.coinSymbols = this.navParams.get('coinSymbols');
+    console.log(this.coinSymbols);
     this.dataProvider.getCoinList().subscribe(data => {
       console.log(data);
       this.coins = data
+      this.coins = this.coins.filter(coin => this.coinSymbols.indexOf(coin.symbol) == -1)
     });
   }
 

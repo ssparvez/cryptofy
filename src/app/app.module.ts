@@ -13,7 +13,7 @@ import { NewsPage } from '../pages/news/news';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
-import { WalletsPage } from '../pages/wallets/wallets';
+import { CoinSelectionPage } from '../pages/coin-selection/coin-selection';
 import { HoldingInfoPage } from '../pages/holding-info/holding-info';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -36,7 +36,7 @@ import { CoreModule } from '../core/core.module';
     PortfolioPage,
     NewsPage,
     SettingsPage,
-    WalletsPage,
+    CoinSelectionPage,
     HoldingInfoPage,
     TabsPage,
     TimeAgoPipe
@@ -60,7 +60,7 @@ import { CoreModule } from '../core/core.module';
     NewsPage,
     SettingsPage,
     TabsPage,
-    WalletsPage,
+    CoinSelectionPage,
     HoldingInfoPage
   ],
   providers: [

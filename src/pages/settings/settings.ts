@@ -24,11 +24,15 @@ export class SettingsPage {
     this.storage.ready().then(()=> {
       this.storage.get('darkMode').then((val) => {
         console.log('Your age is', val);
-        this.settings.darkMode = val;
+        if(val !== null && val !== undefined && val.length !== 0) {
+          this.settings.darkMode = val;
+        }
       });
       this.storage.get('currency').then((val) => {
         console.log('Your age is', val);
-        this.settings.currency = val;
+        if(val !== null && val !== undefined && val.length !== 0) {
+          this.settings.currency = val;
+        }
       });
     });
   }

@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
-import { WalletsPage } from '../wallets/wallets';
+import { CoinSelectionPage } from '../coin-selection/coin-selection';
 import { Holding } from '../../models/holding';
 import { CryptoProvider } from '../../providers/cryptodata';
 import { HoldingInfoPage } from '../holding-info/holding-info';
@@ -21,10 +21,10 @@ export class PortfolioPage {
     type: 'doughnut',
     labels: [],
     data: [],
-    colors:  [{ backgroundColor: ['#5628B4', '#D80E70', '#E7455F', '#F7B236'] }],
+    colors:  [{ backgroundColor: ['#5628B4', '#AA00FF', '#FF1744', '#FF9800', '#FFEB3B', '#64DD17', '#00BFA5', '#448AFF'] }],
     options: {
       legend: { display: false },
-      cutoutPercentage: 75,
+      cutoutPercentage: 80,
       animation: { animateScale: true }
     }
   }
@@ -37,6 +37,7 @@ export class PortfolioPage {
     this.auth.user.subscribe((user)=> {
       this.showSpinner = false;
       console.log(user.uid);
+      console.log(user);
       this.holdingCollection = this.db.collection('holdings', ref => ref.where('userId', '==', user.uid));
       // use snapshot changes to get id of each doc for deletion
       this.holdings = this.holdingCollection.snapshotChanges().map(changes => {
@@ -79,7 +80,7 @@ export class PortfolioPage {
   }
 
   displayWallets() {
-    this.navCtrl.push(WalletsPage, { coinSymbols: this.coinSymbols});
+    this.navCtrl.push(CoinSelectionPage, { coinSymbols: this.coinSymbols});
   }
 
   displayHoldingInfo(holding) {
@@ -92,6 +93,7 @@ export class PortfolioPage {
 
   removeHolding(holding) {
     console.log(holding);
+    this.holdings.subscribe((val) => val.filter(item => item.id !== holding.id));
     this.db.doc(`holdings/${holding.id}`).delete();
   }
 }
