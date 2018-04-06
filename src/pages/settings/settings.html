@@ -24,11 +24,10 @@
         <ion-card>
           <ion-item>
             <ion-avatar item-start>
-              <img [src]="user.photoURL">
+              <img [src]="user.photoURL" [alt]="'../assets/imgs/' + (settings.darkMode? 'white-person.svg' : 'black-person.svg')">
             </ion-avatar>
             <h2>{{ user.displayName }}</h2>
-            <p *ngIf="user.providerData?.length">{{user.providerData[0].providerId}}</p>
-
+            <p *ngIf="socialProvider">Via {{socialProvider}}</p>
             <button item-end ion-button icon-left clear small (tap)="auth.signOut()">
               <ion-icon name="log-out"></ion-icon>
               <div>Sign Out</div>

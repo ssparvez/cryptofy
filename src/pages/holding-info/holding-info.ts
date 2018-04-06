@@ -35,7 +35,7 @@ export class HoldingInfoPage {
       amount: [this.coinAmount ? this.coinAmount: '', Validators.required] 
     });
 
-    auth.user.subscribe((user)=> {
+    auth.user.subscribe(user => {
       console.log(user.uid);
       this.userId = user.uid;
       this.holdingCollection = db.collection('holdings');

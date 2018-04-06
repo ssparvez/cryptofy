@@ -37,35 +37,38 @@
   <!-- User logged in -->
   <ng-template #authenticated>
     <div *ngIf="auth.user | async as user;">
-      <div *ngIf="!holdings" text-center style="margin-top: 75px;">
-        <h3 ion-text color="secondary" style="font-weight:700;">Your portfolio is hungry.</h3>
-        <img src="../../assets/imgs/donut.jpg" padding-horizontal margin-top>
-        <h5 style="color: grey; font-weight:300" margin-top>Add holdings to feed it.</h5>
-      </div>
-      <div *ngIf="holdings">
+      <div *ngIf="holdings && chart.data.length > 0; else emptyState">
         <h1 padding-horizontal style="font-weight: 700;">Value: {{totalValue | currency}}</h1>
-        <canvas *ngIf="chart.data" baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
+        <canvas baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
           [options]="chart.options">
         </canvas>
         <ion-list margin-top>
-            <ion-item-sliding #item *ngFor="let holding of holdings | async">
-                <ion-item [ngStyle]="{'border-left': '10px solid' + (chart.colors[0].backgroundColor[holding.index] ? chart.colors[0].backgroundColor[holding.index] : '#E0E0E0')}" (tap)="displayHoldingInfo(holding)">
-                    <strong>{{holding.coinName}}</strong>
-                    <ion-note margin-left item-end>{{holding.amount}} {{holding.coinSymbol}}</ion-note>
-                    <span item-end>{{chart.data[holding.index] | currency}}</span>
-                </ion-item>
-                <ion-item-options side="right">
-                  <button ion-button color="danger" (click)="removeHolding(holding)">
-                    <ion-icon name="close"></ion-icon>
-                    Remove
-                  </button>
-                </ion-item-options>
-              </ion-item-sliding>
+          <ion-item-sliding #item *ngFor="let holding of holdings | async">
+            <ion-item [ngStyle]="{'border-left': '10px solid' + (chart.colors[0].backgroundColor[holding.index] ? chart.colors[0].backgroundColor[holding.index] : '#E0E0E0')}"
+              (tap)="displayHoldingInfo(holding)">
+              <strong>{{holding.coinName}}</strong>
+              <ion-note margin-left item-end>{{holding.amount}} {{holding.coinSymbol}}</ion-note>
+              <span item-end>{{chart.data[holding.index] | currency}}</span>
+            </ion-item>
+            <ion-item-options side="right">
+              <button ion-button color="danger" (click)="removeHolding(holding)">
+                <ion-icon name="close"></ion-icon>
+                Remove
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
         </ion-list>
-        <ion-grid no-padding>
+        <ion-grid>
           <ion-note text-center>* Update your holdings as you make transactions.</ion-note>
         </ion-grid>
       </div>
+      <ng-template #emptyState>
+        <div text-center style="margin-top: 75px;">
+          <h3 ion-text color="secondary" style="font-weight:700;">Your portfolio is hungry.</h3>
+          <img src="../../assets/imgs/donut.jpg" padding-horizontal margin-top>
+          <h5 style="color: grey; font-weight:300" margin-top>Add holdings to feed it.</h5>
+        </div>
+      </ng-template>
       <ion-fab top right>
         <button ion-fab mini color="secondary" (tap)="displayWallets()">
           <ion-icon name="add"></ion-icon>

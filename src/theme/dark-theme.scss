@@ -1,0 +1,58 @@
+.dark-theme {
+    ion-content {
+      background-color: #212121;
+      color: #fff;
+
+      ion-card {
+        background-color: #424242;
+        ion-card-header:first-child {
+            color: #fff;    
+        }
+        ion-item {
+            background-color: #424242;
+            h2 {
+                color: #fff;    
+            }
+            p {
+                color: #BDBDBD;
+            }
+        }
+        ion-card-content {
+            p {
+                color: #fff;    
+            }
+        }
+      }
+      ion-list {
+          ion-item, ion-list-header {
+            background-color: #212121;
+            color: #fff;
+            
+          }
+          
+      }
+      ion-grid {
+          ion-row {
+              ion-col {
+                  ion-item {
+                    background-color: #212121;
+                    color: #fff;
+                    ion-label {
+                        color: #fff !important;
+                    }
+                  }
+              }
+          }
+      }
+    }
+   
+    .toolbar-title {
+      color: #fff;
+    }
+
+    ion-tabs {
+        ion-tab {
+            background-color: #212121;    
+        }
+    }
+  }  

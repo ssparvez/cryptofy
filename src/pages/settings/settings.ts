@@ -15,30 +15,37 @@ export class SettingsPage {
     fingerprint: false,
     notifications: true,
   }
+
+  socialProvider: string;
   
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, public storage: Storage, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
+    public storage: Storage, public alertCtrl: AlertController) {
   }
 
   ionViewWillEnter() {
+    this.auth.user.subscribe((user) => {
+      console.log(user);
+      if(user) {
+        if(user.photoURL.includes("google")) this.socialProvider = "Google";
+        else if(user.photoURL.includes("twimg")) this.socialProvider = "Twitter";
+        else if(user.photoURL.includes("facebook")) this.socialProvider = "Facebook";
+      }
+    });
     this.storage.ready().then(()=> {
-      this.storage.get('darkMode').then((val) => {
-        console.log('Your age is', val);
-        if(val !== null && val !== undefined && val.length !== 0) {
-          this.settings.darkMode = val;
-        }
-      });
-      this.storage.get('currency').then((val) => {
-        console.log('Your age is', val);
-        if(val !== null && val !== undefined && val.length !== 0) {
-          this.settings.currency = val;
-        }
-      });
+      for(let key in this.settings) {
+        this.storage.get(key).then(setting => {
+          console.log(`Your ${key} is ${setting}`);
+          if(setting !== null && setting !== undefined && setting.length !== 0) {
+            this.settings[key] = setting;
+          }
+        });
+      }
     });
   }
 
   setDarkMode() {
-    this.storage.set('darkMode', !this.settings.darkMode);
+    this.storage.set('darkMode', this.settings.darkMode);
     console.log(`dark mode set to ${this.settings.darkMode}`);
   }
   setCurrency(value: any) {

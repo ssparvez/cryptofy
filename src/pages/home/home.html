@@ -16,8 +16,7 @@
     <span style="float: right; padding-right: 16px; padding-bottom: 4px;">Past 24h</span>
     <ion-card *ngFor="let coin of coins" (tap)="openNewsPage(coin)" (press)="openCoinOptions(coin)">
       <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
-        <b>{{coin.name}}</b>
-        <span> ({{coin.symbol}})</span>
+        <span><b>{{coin.name}}</b> ({{coin.symbol}})</span>
         <span class="coin-percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">{{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}</span>
       </ion-card-header>
       <ion-card-content>

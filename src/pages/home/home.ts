@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, ActionSheetController } from 'ionic-angular';
-import { CryptoProvider } from '../../providers/cryptodata';
+import { DataProvider } from '../../providers/data-provider';
 import { NewsPage } from '../news/news';
 import { Storage } from '@ionic/storage';
 
@@ -14,7 +14,7 @@ export class HomePage {
   currency = "usd";
   showSpinner = true;
 
-  constructor(public navCtrl: NavController, private dataProvider: CryptoProvider, public storage: Storage, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, private dataProvider: DataProvider, public storage: Storage, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController) {
   }
   // on page load
   ionViewWillEnter() {
@@ -25,11 +25,11 @@ export class HomePage {
       this.coins = data;
       // load the currency preference
       this.storage.ready().then(() => {
-        this.storage.get('currency').then((val) => {
-          console.log('Your curr is', val);
+        this.storage.get('currency').then(currency => {
+          console.log('Your curr is', currency);
           // problem when storage value not set
-          if(val !== null && val !== undefined && val.length !== 0) {
-            this.currency = val; 
+          if(currency !== null && currency !== undefined && currency.length !== 0) {
+            this.currency = currency; 
           }
         })
       });

@@ -20,19 +20,12 @@ export class AuthService {
   }
 
   signIn(social: string) {
-    var provider;
-    switch(social) {
-      case 'google':  
-        provider = new firebase.auth.GoogleAuthProvider();
-        break;
-      case 'facebook':  
-        provider = new firebase.auth.FacebookAuthProvider();
-        break;
-      case 'twitter': 
-        provider = new firebase.auth.TwitterAuthProvider();
-        break;
+    const provider = {
+      'google': new firebase.auth.GoogleAuthProvider(),
+      'facebook': new firebase.auth.FacebookAuthProvider(),
+      'twitter': new firebase.auth.TwitterAuthProvider()
     }
-    return this.oAuthLogin(provider);
+    return this.oAuthLogin(provider[social]);
   }
 
   private oAuthLogin(provider) {

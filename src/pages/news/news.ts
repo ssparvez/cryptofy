@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { CryptoProvider } from '../../providers/cryptodata';
+import { DataProvider } from '../../providers/data-provider';
 import { NavParams } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
@@ -12,7 +12,7 @@ export class NewsPage {
   coin: any;
   articles = [];
   
-  constructor(public navCtrl: NavController, private dataProvider: CryptoProvider, private navParams: NavParams, private iab: InAppBrowser) {
+  constructor(public navCtrl: NavController, private dataProvider: DataProvider, private navParams: NavParams, private iab: InAppBrowser) {
     this.coin = this.navParams.get('coin');
     console.log(this.coin.name);
   }

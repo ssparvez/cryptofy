@@ -18,7 +18,7 @@ import { HoldingInfoPage } from '../pages/holding-info/holding-info';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { CryptoProvider } from '../providers/cryptodata';
+import { DataProvider } from '../providers/data-provider';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 // firebase
@@ -67,7 +67,7 @@ import { CoreModule } from '../core/core.module';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CryptoProvider,
+    DataProvider,
     InAppBrowser
   ]
 })

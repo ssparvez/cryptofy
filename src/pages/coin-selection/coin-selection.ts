@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HoldingInfoPage } from '../holding-info/holding-info';
-import { CryptoProvider } from '../../providers/cryptodata';
+import { DataProvider } from '../../providers/data-provider';
 
 @IonicPage()
 @Component({
@@ -12,7 +12,7 @@ export class CoinSelectionPage {
   coins: any;
   coinSymbols: string[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: CryptoProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
   }
 
   ionViewWillEnter() {
