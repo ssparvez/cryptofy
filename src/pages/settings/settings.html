@@ -24,7 +24,7 @@
         <ion-card>
           <ion-item>
             <ion-avatar item-start>
-              <img [src]="user.photoURL" [alt]="'../assets/imgs/' + (settings.darkMode? 'white-person.svg' : 'black-person.svg')">
+              <img [src]="user.photoURL" [alt]="'../assets/imgs/' + (settings.darkMode? 'white' : 'black') + '-person.svg'">
             </ion-avatar>
             <h2>{{ user.displayName }}</h2>
             <p *ngIf="socialProvider">Via {{socialProvider}}</p>

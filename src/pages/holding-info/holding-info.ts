@@ -27,12 +27,10 @@ export class HoldingInfoPage {
     this.coinAmount = this.navParams.get('amount');
     this.formType = this.navParams.get('type');
     this.holdingId = this.navParams.get('holdingId');
-    console.log(this.coin.name);
-    console.log(`coin amt: ${this.coinAmount}`);
-    
+    console.log(this.coin.name);    
     // create form builder
     this.holdingForm = this.formBuilder.group({ 
-      amount: [this.coinAmount ? this.coinAmount: '', Validators.required] 
+      amount: [this.coinAmount ? this.coinAmount : '', Validators.required] 
     });
 
     auth.user.subscribe(user => {
@@ -43,10 +41,6 @@ export class HoldingInfoPage {
     });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletInfoPage');
-  }
-
   closeModal() {
     this.navCtrl.popToRoot();
   }
@@ -54,30 +48,19 @@ export class HoldingInfoPage {
   submitHolding() {
     if(this.formType == 'Add') {
       console.log('adding coin');
-      console.log(this.holdingForm.value);
       const newHolding: Holding = {
         userId: this.userId,
-        coinName: this.coin.name,
-        coinSymbol: this.coin.symbol,
-        amount: parseFloat(this.holdingForm.value.amount),
+        coin: {
+          name: this.coin.name,
+          symbol: this.coin.symbol
+        },
+        amount: parseFloat(this.holdingForm.value.amount)
       }
+      const toast = this.toastCtrl.create({duration: 3000, position: 'top'});
       this.holdingCollection.add(newHolding)
-        .then(() => {
-          const toast = this.toastCtrl.create({
-            message: `Added ${newHolding.coinName} holding`,
-            duration: 3000,
-            position: 'top'
-          });
-          toast.present();
-        })
-        .catch(() => {
-          const toast = this.toastCtrl.create({
-            message: `Couldn't add ${newHolding.coinName} holding`,
-            duration: 3000,
-            position: 'top'
-          });
-          toast.present();
-        });
+        .then(() => toast.setMessage(`Added ${newHolding.coin.name} holding`))
+        .catch(() => toast.setMessage(`Couldn't add ${newHolding.coin.name} holding`));
+      toast.present();
     }
     else {
       console.log(`Editing ${this.coin.name}`);

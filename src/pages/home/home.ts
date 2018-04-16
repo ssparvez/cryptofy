@@ -16,8 +16,8 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private dataProvider: DataProvider, public storage: Storage, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController) {
   }
-  // on page load
-  ionViewWillEnter() {
+  
+  ionViewWillEnter() { // on page load
      // load coin market cap data
      this.dataProvider.getCoinList().subscribe(data => {
       this.showSpinner = false;
@@ -38,33 +38,26 @@ export class HomePage {
 
   // on page refresh
   refreshCoinList(refresher) {
-    console.log('Begin async operation', refresher);
-    this.dataProvider.getCoinList().subscribe(data => {
-      console.log(data);
-      this.coins = data;
-    },
-    error => {
-      console.log("Error: ", error);
-      refresher.complete();
-      let toast = this.toastCtrl.create({
-        message: "Can't retrieve data",
-        duration: 3000,
-        position: "top"
-      });
-      toast.present();
-    },
-    () => {
-      console.log("Async operation has ended");
-      refresher.complete();
-    });
+    this.dataProvider.getCoinList().subscribe(
+      data => this.coins = data,
+      error => {
+        refresher.complete();
+        let toast = this.toastCtrl.create({
+          message: "Can't retrieve data",
+          duration: 3000,
+          position: "top"
+        });
+        toast.present();
+      },
+      () => refresher.complete()
+    );
   }
 
   addToFavorites(coinSymbol) {
     console.log(`adding ${coinSymbol} to favorites`);
   }
 
-  openNewsPage(coin) {
-    // push another page onto the navigation stack
+  openNewsPage(coin) { // push another page onto the navigation stack
     this.navCtrl.push(NewsPage, {coin: coin});
   }
 

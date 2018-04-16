@@ -25,10 +25,6 @@ export class CoinSelectionPage {
     });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletsPage');
-  }
-
   openWalletInfoPage(coin) {
     this.navCtrl.push(HoldingInfoPage, {coin, type: 'Add'});
   }
