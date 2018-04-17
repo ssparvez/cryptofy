@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Enter credentials</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (tap)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="emailForm" (ngSubmit)="submitCredentials()">
+    <ion-grid no-padding>
+      <ion-row radio-group formControlName="createOrLogIn">
+        <ion-item>
+          <ion-label>Log In</ion-label>
+          <ion-radio value="logIn"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Create Account</ion-label>
+          <ion-radio value="create"></ion-radio>
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-item>
+          <ion-label color="primary" floating>Email</ion-label>
+          <ion-input type="email" formControlName="email"></ion-input>
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-item>
+          <ion-label color="primary" floating>Password</ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+      </ion-row>
+      <ion-row margin-top padding-horizontal>
+        <button ion-button full [disabled]="!emailForm.valid">Submit</button>
+      </ion-row>
+      <ion-note text-center>* All fields required.</ion-note>
+    </ion-grid>
+  </form>
+</ion-content>

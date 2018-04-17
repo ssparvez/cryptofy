@@ -13,9 +13,13 @@
     </div>
     <!-- User NOT logged in -->
     <ng-template #guest>
-      <ion-item no-lines (tap)="switchToPortfolio()">
-        <ion-icon name='log-in' item-start></ion-icon>
-        Sign in to get started...
+      <ion-item no-lines>
+        <ion-row>
+          <button ion-button color="secondary" full (tap)="switchToPortfolio()">
+            <ion-icon name='log-in' item-start></ion-icon>
+            Sign in to get started
+          </button>
+        </ion-row>
       </ion-item>
     </ng-template>
     <!-- User logged in -->
@@ -24,7 +28,7 @@
         <ion-card>
           <ion-item>
             <ion-avatar item-start>
-              <img [src]="user.photoURL" [alt]="'../assets/imgs/' + (settings.darkMode? 'white' : 'black') + '-person.svg'">
+              <img [src]="user.photoURL" (error)="user.photoURL='../assets/imgs/' + (settings.darkMode? 'white' : 'black') + '-person.svg'">
             </ion-avatar>
             <h2>{{ user.displayName }}</h2>
             <p *ngIf="socialProvider">Via {{socialProvider}}</p>
@@ -58,17 +62,20 @@
       <ion-toggle [(ngModel)]="settings.notifications"></ion-toggle>
     </ion-item>
   </ion-list>
-  <ion-list no-lines>
+  <ion-list no-lines *ngIf="auth.user | async as user">
     <ion-list-header>
       Security
     </ion-list-header>
     <ion-item>
       <ion-label>Require Fingerprint</ion-label>
       <ion-icon name='finger-print' item-start></ion-icon>
-      <ion-toggle [(ngModel)]="settings.fingerprint"></ion-toggle>
+      <ion-toggle [(ngModel)]="settings.fingerprint" disabled="true"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <button ion-button color="danger" full (tap)="showConfirm()">Remove Account</button>
+      </ion-row>
     </ion-item>
   </ion-list>
-  <ion-row margin-top padding-horizontal *ngIf="auth.user | async as user">
-      <button ion-button color="danger" full (tap)="showConfirm()">Remove Account</button>
-  </ion-row>
+
 </ion-content>

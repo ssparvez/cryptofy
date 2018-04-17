@@ -27,9 +27,12 @@ export class SettingsPage {
     this.auth.user.subscribe((user) => {
       console.log(user);
       if(user) {
-        if(user.photoURL.includes("google")) this.socialProvider = "Google";
-        else if(user.photoURL.includes("twimg")) this.socialProvider = "Twitter";
-        else if(user.photoURL.includes("facebook")) this.socialProvider = "Facebook";
+        if(user.photoURL) {
+          if(user.photoURL.includes("google")) this.socialProvider = "Google";
+          else if(user.photoURL.includes("twimg")) this.socialProvider = "Twitter";
+          else if(user.photoURL.includes("facebook")) this.socialProvider = "Facebook";
+        }
+        else this.socialProvider = "email";
       }
     });
     this.storage.ready().then(()=> {

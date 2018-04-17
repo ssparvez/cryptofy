@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { AuthService } from '../../core/auth.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Holding } from '../../models/holding';
 import { Observable } from 'rxjs/Observable';
 
-@IonicPage()
 @Component({
   selector: 'page-holding-info',
   templateUrl: 'holding-info.html',
@@ -56,7 +55,7 @@ export class HoldingInfoPage {
         },
         amount: parseFloat(this.holdingForm.value.amount)
       }
-      const toast = this.toastCtrl.create({duration: 3000, position: 'top'});
+      const toast = this.toastCtrl.create({duration: 1000, position: 'top'});
       this.holdingCollection.add(newHolding)
         .then(() => toast.setMessage(`Added ${newHolding.coin.name} holding`))
         .catch(() => toast.setMessage(`Couldn't add ${newHolding.coin.name} holding`));

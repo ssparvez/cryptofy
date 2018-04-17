@@ -16,7 +16,7 @@
 }
 
 .coin-price {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 200;
 }
 
@@ -24,6 +24,8 @@
     float: right;
 }
 
-.coin-name {
-    font-weight: bold;
+ion-card {
+    ion-card-header {
+        padding-bottom: 8px !important;
+    }
 }

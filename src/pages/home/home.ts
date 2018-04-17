@@ -11,8 +11,9 @@ import { Storage } from '@ionic/storage';
 })
 export class HomePage {
   coins: any;
-  currency = "usd";
-  showSpinner = true;
+  currency: string = "usd";
+  showSpinner: boolean = true;
+  searchInput: string = "";
 
   constructor(public navCtrl: NavController, private dataProvider: DataProvider, public storage: Storage, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController) {
   }
@@ -42,9 +43,9 @@ export class HomePage {
       data => this.coins = data,
       error => {
         refresher.complete();
-        let toast = this.toastCtrl.create({
+        const toast = this.toastCtrl.create({
           message: "Can't retrieve data",
-          duration: 3000,
+          duration: 1000,
           position: "top"
         });
         toast.present();
@@ -87,5 +88,17 @@ export class HomePage {
       ]
     });
     actionSheet.present();
+  }
+
+  upperBound: number = 20;
+  doInfinite(infiniteScroll) {
+    setTimeout(() => {
+      this.upperBound += 20;
+      infiniteScroll.complete();
+    }, 500);
+  }
+
+  onInput() {
+    this.coins = this.coins.filter((coin) => coin.name.toLowerCase().includes(this.searchInput.toLowerCase()));  
   }
 }

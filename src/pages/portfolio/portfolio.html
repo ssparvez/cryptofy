@@ -19,17 +19,21 @@
     <ng-template #showSignIn>
       <h3 text-center>Sign in to get started...</h3>
       <ion-list no-border>
-        <ion-item (tap)="auth.signIn('google')">
+        <ion-item (tap)="openEmailLoginPage(false)">
+          <ion-icon name='mail' item-start></ion-icon>
+          <ion-label>Email</ion-label>
+        </ion-item>
+        <ion-item (tap)="auth.signInWithSocial('google')">
           <ion-icon name='logo-google' item-start color="google"></ion-icon>
-          <ion-label color="google">Google</ion-label>
+          <ion-label>Google</ion-label>
         </ion-item>
-        <ion-item (tap)="auth.signIn('facebook')">
+        <ion-item (tap)="auth.signInWithSocial('facebook')">
           <ion-icon name='logo-facebook' item-start color="facebook"></ion-icon>
-          <ion-label color="facebook">Facebook</ion-label>
+          <ion-label>Facebook</ion-label>
         </ion-item>
-        <ion-item (tap)="auth.signIn('twitter')">
+        <ion-item (tap)="auth.signInWithSocial('twitter')">
           <ion-icon name='logo-twitter' item-start color="twitter"></ion-icon>
-          <ion-label color="twitter">Twitter</ion-label>
+          <ion-label>Twitter</ion-label>
         </ion-item>
       </ion-list>
     </ng-template>
@@ -37,7 +41,7 @@
   <!-- User logged in -->
   <ng-template #authenticated>
     <div *ngIf="auth.user | async as user;">
-      <div *ngIf="holdings; else emptyState">
+      <div *ngIf="(holdings); else emptyState">
         <h1 padding-horizontal style="font-weight: 700;">Value: {{totalValue | currency}}</h1>
         <canvas baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
           [options]="chart.options">

@@ -19,12 +19,10 @@
     </ion-list>
     <ion-grid no-padding>
       <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label color="primary" floating>Total Amount Owned ({{coin.symbol}})</ion-label>
-            <ion-input type="number" formControlName="amount"></ion-input>
-          </ion-item>
-        </ion-col>
+        <ion-item>
+          <ion-label color="primary" floating>Total Amount Owned ({{coin.symbol}})</ion-label>
+          <ion-input type="number" formControlName="amount"></ion-input>
+        </ion-item>
       </ion-row>
       <ion-row margin-top padding-horizontal>
         <button ion-button full [disabled]="!holdingForm.valid">Submit</button>

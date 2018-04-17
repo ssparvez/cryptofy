@@ -4,8 +4,11 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { TimeAgoPipe } from 'time-ago-pipe';
 import { ChartsModule } from 'ng2-charts';
+
+//pipes
+import { FilterPipe} from '../pipes/filter.pipe';
+import { TimeAgoPipe } from 'time-ago-pipe';
 
 // pages
 import { PortfolioPage } from '../pages/portfolio/portfolio';
@@ -15,6 +18,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
 import { CoinSelectionPage } from '../pages/coin-selection/coin-selection';
 import { HoldingInfoPage } from '../pages/holding-info/holding-info';
+import { EmailLoginPage } from '../pages/email-login/email-login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -38,8 +42,10 @@ import { CoreModule } from '../core/core.module';
     SettingsPage,
     CoinSelectionPage,
     HoldingInfoPage,
+    EmailLoginPage,
     TabsPage,
-    TimeAgoPipe
+    TimeAgoPipe,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -61,7 +67,8 @@ import { CoreModule } from '../core/core.module';
     SettingsPage,
     TabsPage,
     CoinSelectionPage,
-    HoldingInfoPage
+    HoldingInfoPage,
+    EmailLoginPage
   ],
   providers: [
     StatusBar,

@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DataProvider {
   //url = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,LTC&tsyms=USD";
-  dataUrl = "https://api.coinmarketcap.com/v1/ticker/?limit=100";
+  dataUrl = "https://api.coinmarketcap.com/v1/ticker/?limit=0";
   newsUrl = 'https://newsapi.org/v2';
   constructor(public http: HttpClient) {
   }

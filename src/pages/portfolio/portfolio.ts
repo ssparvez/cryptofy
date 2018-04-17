@@ -7,6 +7,7 @@ import { CoinSelectionPage } from '../coin-selection/coin-selection';
 import { Holding } from '../../models/holding';
 import { DataProvider } from '../../providers/data-provider';
 import { HoldingInfoPage } from '../holding-info/holding-info';
+import { EmailLoginPage } from '../email-login/email-login';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class PortfolioPage {
       },
       elements: {
         arc: {
-            borderWidth: 0
+          borderWidth: 0
         }
       }
     }
@@ -67,25 +68,33 @@ export class PortfolioPage {
 
   calculateHoldings() {
     this.holdings.subscribe(holdings => {
-      this.coinSymbols = []; // collect symbols to query cryptocompare api
-      console.log(holdings);
-      holdings.forEach(holding => this.coinSymbols.push(holding.coin.symbol));
-      this.dataProvider.getPortfolioCoins(this.coinSymbols).subscribe(data => {
-        this.chart.data = [];
-        this.totalValue = 0;
-        holdings.forEach(holding => { // calculate values
-          const price = data['DISPLAY'][holding.coin.symbol]['USD']['PRICE'].replace('$ ', '').replace(',', '');
-          holding.value = holding.amount * parseFloat(price); // calculate current value
-          this.totalValue += holding.value;
-          this.chart.data.push(holding.value.toFixed(2));
-          this.chart.labels.push(holding.coin.name);
+      if(holdings.length > 0) {
+        this.coinSymbols = []; // collect symbols to query cryptocompare api
+        console.log(holdings);
+        holdings.forEach(holding => this.coinSymbols.push(holding.coin.symbol));
+        this.dataProvider.getPortfolioCoins(this.coinSymbols).subscribe(data => {
+          console.log(data);
+          this.chart.data = [];
+          this.totalValue = 0;
+          holdings.forEach(holding => { // calculate values
+            const price = data['DISPLAY'][holding.coin.symbol]['USD']['PRICE'].replace('$ ', '').replace(',', '');
+            holding.value = holding.amount * parseFloat(price); // calculate current value
+            this.totalValue += holding.value;
+            this.chart.data.push(holding.value.toFixed(2));
+            this.chart.labels.push(holding.coin.name);
+            console.log(holding.value);
+          });
         });
-      });
+      }
     });
   }
 
   displayWallets() {
     this.navCtrl.push(CoinSelectionPage, { coinSymbols: this.coinSymbols });
+  }
+
+  openEmailLoginPage(toCreateAccount) {
+    this.navCtrl.push(EmailLoginPage);
   }
 
   displayHoldingInfo(holding) {

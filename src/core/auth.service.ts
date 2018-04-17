@@ -19,32 +19,52 @@ export class AuthService {
     })
   }
 
-  signIn(social: string) {
+  createAccountWithEmail(email: string, password: string) {
+    const toast = this.toastCtrl.create({duration: 1000, position: 'top'});
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then(credential => {
+        console.log('what up')
+        console.log(credential);
+        this.updateUserData(credential);
+        toast.setMessage('Account created :)');
+        toast.present();
+      })
+      .catch(error => {
+        console.log(error);
+        toast.setMessage('Unsuccessful account creation :(');
+        toast.present();
+      });
+  }
+
+  signInWithEmail(email: string, password: string) {
+    const toast = this.toastCtrl.create({duration: 1000, position: 'top'});
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      .then(credential => {
+        this.updateUserData(credential);
+        toast.setMessage('Successfully signed in :)');
+        toast.present();
+      })
+      .catch(error => {
+        toast.setMessage('Invalid email or password');
+        toast.present();
+      });
+  }
+
+  signInWithSocial(social: string) {
     const provider = {
       'google': new firebase.auth.GoogleAuthProvider(),
       'facebook': new firebase.auth.FacebookAuthProvider(),
       'twitter': new firebase.auth.TwitterAuthProvider()
     }
-    return this.oAuthLogin(provider[social]);
-  }
-
-  private oAuthLogin(provider) {
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((credential) => {
+    const toast = this.toastCtrl.create({duration: 1000, position: 'top'});
+    return this.afAuth.auth.signInWithRedirect(provider[social])
+      .then(credential => {
         this.updateUserData(credential.user);
-        const toast = this.toastCtrl.create({
-          message: 'Successfully signed in :)',
-          duration: 3000,
-          position: 'top'
-        });
+        toast.setMessage('Successfully signed in :)');
         toast.present();
       })
-      .catch((error) => {
-        const toast = this.toastCtrl.create({
-          message: 'Unsuccessful sign in :(',
-          duration: 3000,
-          position: 'top'
-        });
+      .catch(error => {
+        toast.setMessage('Unsuccessful sign in :(');
         toast.present();
       });
   }
@@ -55,7 +75,7 @@ export class AuthService {
     const data: User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
+      displayName: user.displayName ? user.displayName : user.email,
       photoURL: user.photoURL,
     };
     return userRef.set(data, {merge: true});
@@ -65,7 +85,7 @@ export class AuthService {
     this.afAuth.auth.signOut();
     const toast = this.toastCtrl.create({
         message: 'Successfully signed out',
-        duration: 3000,
+        duration: 1000,
         position: 'top'
     });
     toast.present();
