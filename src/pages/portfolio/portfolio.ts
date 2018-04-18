@@ -52,7 +52,7 @@ export class PortfolioPage {
     this.auth.user
       .switchMap(user => this.getHoldings(user))
       .switchMap(holdings => this.retrieveHoldingPrices(holdings))
-      .subscribe(data => this.calculateHoldingValues(data), err => console.log(err));
+      .subscribe(data => this.calculateHoldingValues(data), err => {});
 
     // this.auth.user.subscribe(user => {
     //   this.showSpinner = false; // might have to move this

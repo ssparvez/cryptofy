@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AuthService } from '../../core/auth.service';
 import { Storage } from '@ionic/storage';
+import { SettingsProvider } from '../../providers/settings-provider';
 
 @Component({
   selector: 'page-settings',
@@ -15,12 +16,10 @@ export class SettingsPage {
     fingerprint: false,
     notifications: true,
   }
-
   socialProvider: string;
-  
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
-    public storage: Storage, public alertCtrl: AlertController) {
+    public storage: Storage, public alertCtrl: AlertController, private settingsProvider: SettingsProvider) {
   }
 
   ionViewWillEnter() {
@@ -50,6 +49,7 @@ export class SettingsPage {
   setDarkMode() {
     this.storage.set('darkMode', this.settings.darkMode);
     console.log(`dark mode set to ${this.settings.darkMode}`);
+    this.settingsProvider.setActiveTheme(this.settings.darkMode ? "dark-theme" : 'light-theme');
   }
   setCurrency(value: any) {
     this.storage.set('currency', value);
@@ -61,7 +61,7 @@ export class SettingsPage {
   }
 
   showConfirm() {
-    let confirm = this.alertCtrl.create({
+    const confirm = this.alertCtrl.create({
       title: 'Remove Account?',
       message: 'All portfolio data will be destroyed and account will be unlinked.',
       buttons: [
