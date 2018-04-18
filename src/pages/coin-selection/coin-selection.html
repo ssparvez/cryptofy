@@ -5,7 +5,13 @@
 </ion-header>
 
 <ion-content>
+  <div class="spinner" *ngIf="showSpinner; else showCoins">
+    <div class="dot1"></div>
+    <div class="dot2"></div>
+  </div>
+  <ng-template #showCoins>
     <ion-list>
       <ion-item *ngFor="let coin of coins" (tap)="openWalletInfoPage(coin)">{{coin.name}}</ion-item>
     </ion-list>
+  </ng-template>
 </ion-content>

@@ -40,22 +40,22 @@
   </ng-template>
   <!-- User logged in -->
   <ng-template #authenticated>
-    <div *ngIf="auth.user | async as user;">
-      <div *ngIf="(holdings); else emptyState">
+    <div *ngIf="auth.user">
+      <div *ngIf="(holdings.length > 0); else emptyState">
         <h1 padding-horizontal style="font-weight: 700;">Value: {{totalValue | currency}}</h1>
         <canvas baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
           [options]="chart.options">
         </canvas>
         <ion-list margin-top no-lines>
-          <ion-item-sliding #item *ngFor="let holding of holdings | async; let i = index">
+          <ion-item-sliding #item *ngFor="let holding of holdings; let i = index">
             <ion-item [ngStyle]="{'border-left': '10px solid' + (i < chart.colors[0].backgroundColor.length ? chart.colors[0].backgroundColor[i] : '#E0E0E0')}"
-              (tap)="displayHoldingInfo(holding)">
+              (tap)="openHoldingInfoPage(holding)">
               <strong>{{holding.coin.name}}</strong>
               <ion-note margin-left item-end>{{holding.amount}} {{holding.coin.symbol}}</ion-note>
               <span item-end>{{chart.data[i] | currency}}</span>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button color="danger" (click)="removeHolding(holding)">
+              <button ion-button color="danger" (tap)="removeHolding(holding, i)">
                 <ion-icon name="close"></ion-icon>
                 Remove
               </button>
@@ -80,7 +80,7 @@
         </ng-template>
       </ng-template>
       <ion-fab top right>
-        <button ion-fab mini color="secondary" (tap)="displayWallets()">
+        <button ion-fab mini color="secondary" (tap)="openCoinSelectionPage()">
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-fab>

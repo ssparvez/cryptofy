@@ -3,7 +3,7 @@
     <ion-title>Home</ion-title>
   </ion-navbar>
   <ion-toolbar>
-    <ion-searchbar [(ngModel)]="searchInput" [showCancelButton]="shouldShowCancel"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchInput"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +17,7 @@
   </div>
   <ng-template #showCoins>
     <span style="float: right; padding-right: 13px; padding-bottom: 4px;">Past 24h</span>
-    <ion-card *ngFor="let coin of coins | slice : 0 : upperBound | filter : searchInput" (tap)="openNewsPage(coin)" (press)="openCoinOptions(coin)">
+    <ion-card *ngFor="let coin of coins  | filter : searchInput | slice : 0 : upperBound" (tap)="openNewsPage(coin)" (press)="openCoinOptions(coin)">
       <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
         <span>
           <b>{{coin.name}}</b> ({{coin.symbol}})</span>

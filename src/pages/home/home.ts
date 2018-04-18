@@ -97,8 +97,4 @@ export class HomePage {
       infiniteScroll.complete();
     }, 500);
   }
-
-  onInput() {
-    this.coins = this.coins.filter((coin) => coin.name.toLowerCase().includes(this.searchInput.toLowerCase()));  
-  }
 }

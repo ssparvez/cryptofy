@@ -10,6 +10,8 @@ import { DataProvider } from '../../providers/data-provider';
 export class CoinSelectionPage {
   coins: any;
   coinSymbols: string[];
+  showSpinner: boolean = true;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
   }
@@ -18,6 +20,7 @@ export class CoinSelectionPage {
     this.coinSymbols = this.navParams.get('coinSymbols');
     console.log(this.coinSymbols);
     this.dataProvider.getCoinList().subscribe(data => {
+      this.showSpinner = false;
       console.log(data);
       this.coins = data
       this.coins = this.coins.filter(coin => this.coinSymbols.indexOf(coin.symbol) == -1)
