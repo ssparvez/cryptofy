@@ -11,7 +11,7 @@ export class CoinSelectionPage {
   coins: any;
   coinSymbols: string[];
   showSpinner: boolean = true;
-
+  searchInput: string = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
   }

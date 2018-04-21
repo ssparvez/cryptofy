@@ -1,22 +1,37 @@
 $darkColor: #212121;
 $lightColor: #fff;
+$grayColor: #BDBDBD;
+$darkGrayColor: #424242;
+$lightBlueColor: #536DFE;
 .dark-theme {
+    ion-header {
+        ion-toolbar {
+            .toolbar-background {
+                background-color: $darkColor;
+            }
+            .searchbar-input {
+                background-color: $darkGrayColor;
+                color: $lightColor;
+            }
+        }
+    }
+
     ion-content {
       background-color: $darkColor;
       color: $lightColor;
 
       ion-card {
-        background-color: #424242;
+        background-color: $darkColor;
         ion-card-header:first-child {
             color: $lightColor;    
         }
         ion-item {
-            background-color: #424242;
+            background-color: $darkColor;
             h2 {
                 color: $lightColor;    
             }
             p {
-                color: #BDBDBD;
+                color: $grayColor;
             }
         }
         ion-card-content {
@@ -28,8 +43,7 @@ $lightColor: #fff;
       ion-list {
           ion-item, ion-list-header {
             background-color: $darkColor;
-            color: #fff;
-            
+            color: $lightColor;
           }
           
       }
@@ -52,9 +66,26 @@ $lightColor: #fff;
       color: $lightColor;
     }
 
-    ion-tabs {
-        ion-tab {
-            background-color: $darkColor;    
+    .tabbar {
+        background-color: $darkColor !important;
+        .tab-button, .tab-button-icon {
+            color: $grayColor !important;
+        }
+        .tab-button[aria-selected=true] , .tab-button[aria-selected=true] .tab-button-icon {
+            color: $lightBlueColor !important;
+        }
+    }
+
+    form {
+        ion-row {
+            ion-item {
+                background-color: $darkColor;
+                color: white;
+                ion-label {
+                    color: $grayColor !important;
+                }
+            }
+            
         }
     }
   }  

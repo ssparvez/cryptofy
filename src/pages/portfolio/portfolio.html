@@ -19,19 +19,19 @@
     <ng-template #showSignIn>
       <h3 text-center>Sign in to get started...</h3>
       <ion-list no-border>
-        <ion-item (tap)="openEmailLoginPage(false)">
+        <ion-item (tap)="openEmailLoginPage()">
           <ion-icon name='mail' item-start></ion-icon>
           <ion-label>Email</ion-label>
         </ion-item>
-        <ion-item (tap)="auth.signInWithSocial('google')">
+        <ion-item (tap)="signInWith('google')">
           <ion-icon name='logo-google' item-start color="google"></ion-icon>
           <ion-label>Google</ion-label>
         </ion-item>
-        <ion-item (tap)="auth.signInWithSocial('facebook')">
+        <ion-item (tap)="signInWith('facebook')">
           <ion-icon name='logo-facebook' item-start color="facebook"></ion-icon>
           <ion-label>Facebook</ion-label>
         </ion-item>
-        <ion-item (tap)="auth.signInWithSocial('twitter')">
+        <ion-item (tap)="signInWith('twitter')">
           <ion-icon name='logo-twitter' item-start color="twitter"></ion-icon>
           <ion-label>Twitter</ion-label>
         </ion-item>
@@ -42,17 +42,17 @@
   <ng-template #authenticated>
     <div *ngIf="auth.user">
       <div *ngIf="(holdings.length > 0); else emptyState">
-        <h1 padding-horizontal style="font-weight: 700;">Value: {{totalValue | currency}}</h1>
+        <h1 padding-horizontal style="font-weight: 700;" class="fadeIn">Value: {{totalValue | currency}}</h1>
         <canvas baseChart style="margin-top: 25px;" [data]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
           [options]="chart.options">
         </canvas>
-        <ion-list margin-top no-lines>
-          <ion-item-sliding #item *ngFor="let holding of holdings; let i = index">
+        <ion-list margin-top no-lines *ngIf="sorted">
+          <ion-item-sliding #item *ngFor="let holding of holdings; let i = index" class="fadeIn">
             <ion-item [ngStyle]="{'border-left': '10px solid' + (i < chart.colors[0].backgroundColor.length ? chart.colors[0].backgroundColor[i] : '#E0E0E0')}"
               (tap)="openHoldingInfoPage(holding)">
               <strong>{{holding.coin.name}}</strong>
               <ion-note margin-left item-end>{{holding.amount}} {{holding.coin.symbol}}</ion-note>
-              <span item-end>{{chart.data[i] | currency}}</span>
+              <span item-end>{{holding.value | currency}}</span>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button color="danger" (tap)="removeHolding(holding, i)">
@@ -62,7 +62,7 @@
             </ion-item-options>
           </ion-item-sliding>
         </ion-list>
-        <ion-grid>
+        <ion-grid *ngIf="sorted" class="fadeIn">
           <ion-note text-center>* Update your holdings as you make transactions.</ion-note>
         </ion-grid>
       </div>

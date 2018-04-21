@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 //import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
@@ -17,6 +17,7 @@ export class PortfolioPage {
   holdingCollection: AngularFirestoreCollection<Holding>;
   //holdings: Observable<Holding[]>;
   holdings: Holding[] = [];
+  sorted: boolean = false;
 
   chart = {
     type: 'doughnut',
@@ -45,7 +46,7 @@ export class PortfolioPage {
   totalValue = 0;
   coinSymbols = [];
 
-  constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, public dataProvider: DataProvider) {
+  constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, public dataProvider: DataProvider, private platform: Platform) {
   }
   
   ionViewWillEnter() {
@@ -53,54 +54,16 @@ export class PortfolioPage {
       .switchMap(user => this.getHoldings(user))
       .switchMap(holdings => this.retrieveHoldingPrices(holdings))
       .subscribe(data => this.calculateHoldingValues(data), err => {});
-
-    // this.auth.user.subscribe(user => {
-    //   this.showSpinner = false; // might have to move this
-    //   console.log(user);
-    //   if(user) {
-    //     this.holdingCollection = this.db.collection('holdings', ref => ref.where('userId', '==', user.uid));
-    //     this.holdings = this.holdingCollection.snapshotChanges().map(changes => {
-    //       return changes.map((a) => { // use snapshot changes to get id for deletion
-    //         const holding = a.payload.doc.data() as Holding;
-    //         holding.id = a.payload.doc.id;
-    //         return holding;
-    //       })
-    //     });
-    //     this.calculateHoldings();
-    //   }
-    // });
   }
-
-  // calculateHoldings() {
-  //   this.holdings.subscribe(holdings => {
-  //     if(holdings.length > 0) {
-  //       console.log(holdings);
-  //       this.coinSymbols = holdings.map(holding => holding.coin.symbol);
-  //       this.dataProvider.getPortfolioCoins(this.coinSymbols).subscribe(data => {
-  //         console.log(data);
-  //         this.totalValue = 0;
-  //         this.chart.data = holdings.map(holding => { // calculate values
-  //           const price = data['DISPLAY'][holding.coin.symbol]['USD']['PRICE'].replace(/[^0-9\.-]+/g, "");
-  //           const holdingValue = holding.amount * parseFloat(price); // calculate current value
-  //           this.totalValue += holdingValue;
-  //           this.chart.labels.push(holding.coin.name);
-  //           return parseFloat(holdingValue.toFixed(2));
-  //         });
-  //         console.log(this.chart.data);
-  //       });
-  //     }
-  //   });
-  // }
 
   getHoldings(user) {
     console.log(user);
     if(user != null) {
       this.holdingCollection = this.db.collection('holdings', ref => ref.where('userId', '==', user.uid));
       return this.holdingCollection.snapshotChanges().map(changes => {
-        return changes.map((a) => { // use snapshot changes to get id for deletion
+        return changes.map(a => { // use snapshot changes to get id for deletion
           const holding = a.payload.doc.data() as Holding;
           holding.id = a.payload.doc.id;
-          console.log("what up");
           return holding;
         })
       });
@@ -113,6 +76,7 @@ export class PortfolioPage {
     console.log(holdings);
     this.showSpinner = false; // might have to move this
     if(holdings.length > 0) {
+      this.sorted = false;
       this.coinSymbols = holdings.map(holding => holding.coin.symbol);
       return this.dataProvider.getPortfolioCoins(this.coinSymbols);
     }
@@ -121,13 +85,17 @@ export class PortfolioPage {
   calculateHoldingValues(data) {
     console.log(data);
     this.totalValue = 0;
-    this.chart.data = this.holdings.map(holding => { // calculate values
+    this.holdings.forEach(holding => { // calculate values
       const price = data['DISPLAY'][holding.coin.symbol]['USD']['PRICE'].replace(/[^0-9\.-]+/g, "");
-      const holdingValue = holding.amount * parseFloat(price); // calculate current value
-      this.totalValue += holdingValue;
-      this.chart.labels.push(holding.coin.name);
-      return parseFloat(holdingValue.toFixed(2));
+      holding.value = holding.amount * parseFloat(price); // calculate current value
+      this.totalValue += holding.value;
     });
+    this.holdings.sort((a, b) => b.value - a.value); // sort holdings descending
+    this.sorted = true;
+    this.chart.data = this.holdings.map(holding => { // populate chart data
+      this.chart.labels.push(holding.coin.name);
+      return parseFloat(holding.value.toFixed(2));
+    })
     console.log(this.chart.data);
   }
 
@@ -135,7 +103,7 @@ export class PortfolioPage {
     this.navCtrl.push(CoinSelectionPage, { coinSymbols: this.coinSymbols });
   }
 
-  openEmailLoginPage(toCreateAccount) {
+  openEmailLoginPage() {
     this.navCtrl.push(EmailLoginPage);
   }
 
@@ -154,5 +122,12 @@ export class PortfolioPage {
   removeHolding(holding, index) {
     console.log("removeing " + holding);
     this.db.doc(`holdings/${holding.id}`).delete();
+  }
+
+
+  signInWith(social) {
+    if(this.platform.is("cordova")) this.auth.nativeSocialSignIn(social);
+    else this.auth.webSocialSignIn(social);
+    this.ionViewWillEnter(); //reloadspage after auth
   }
 }

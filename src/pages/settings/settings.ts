@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AuthService } from '../../core/auth.service';
 import { Storage } from '@ionic/storage';
 import { SettingsProvider } from '../../providers/settings-provider';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'page-settings',
@@ -17,15 +18,17 @@ export class SettingsPage {
     notifications: true,
   }
   socialProvider: string;
+  currentUser: User;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
     public storage: Storage, public alertCtrl: AlertController, private settingsProvider: SettingsProvider) {
   }
 
   ionViewWillEnter() {
-    this.auth.user.subscribe((user) => {
+    this.auth.user.subscribe(user => {
       console.log(user);
       if(user) {
+        this.currentUser = user;
         if(user.photoURL) {
           if(user.photoURL.includes("google")) this.socialProvider = "Google";
           else if(user.photoURL.includes("twimg")) this.socialProvider = "Twitter";
@@ -79,6 +82,7 @@ export class SettingsPage {
   }
 
   removeAccount() {
+    this.auth.removeUserData(this.currentUser); // might not need to pass user
     console.log('Removing account...');
   }
 }

@@ -5,6 +5,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook } from '@ionic-native/facebook'
 
 // pipes
 import { FilterPipe} from '../pipes/filter.pipe';
@@ -79,7 +81,9 @@ import { CoreModule } from '../core/core.module';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DataProvider,
     SettingsProvider,
-    InAppBrowser
+    InAppBrowser,
+    GooglePlus,
+    Facebook
   ]
 })
 export class AppModule {}
