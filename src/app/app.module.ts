@@ -6,7 +6,8 @@ import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
 import { GooglePlus } from '@ionic-native/google-plus';
-import { Facebook } from '@ionic-native/facebook'
+import { Facebook } from '@ionic-native/facebook';
+import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 // pipes
 import { FilterPipe} from '../pipes/filter.pipe';
@@ -83,7 +84,8 @@ import { CoreModule } from '../core/core.module';
     SettingsProvider,
     InAppBrowser,
     GooglePlus,
-    Facebook
+    Facebook,
+    TwitterConnect
   ]
 })
 export class AppModule {}
