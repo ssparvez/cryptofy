@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { AuthService } from '../../core/auth.service';
 import { Storage } from '@ionic/storage';
 import { SettingsProvider } from '../../providers/settings-provider';
-import { User } from '../../models/user';
+import { Market } from '@ionic-native/market';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
+
 
 @Component({
   selector: 'page-settings',
@@ -12,23 +15,30 @@ import { User } from '../../models/user';
 export class SettingsPage {
 
   settings = {
-    currency: "usd",
+    currency: "USD",
     darkMode: false,
     fingerprint: false,
     notifications: true,
   }
   socialProvider: string;
-  currentUser: User;
+  fingerprintAvailable = true;
+
+  fingerprintOptions = {
+    clientId: 'Fingerprint-Demo',
+    clientSecret: 'password', //Only necessary for Android
+    disableBackup: true //Only for Android(optional))
+  }
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
-    public storage: Storage, public alertCtrl: AlertController, private settingsProvider: SettingsProvider) {
+    public storage: Storage, private settingsProvider: SettingsProvider, private market: Market, private socialSharing: SocialSharing,
+    private platform: Platform, private fingerprintAIO: FingerprintAIO) {
+      if(this.platform.is("cordova")) this.checkFingerprint();
   }
 
   ionViewWillEnter() {
     this.auth.user.subscribe(user => {
       console.log(user);
       if(user) {
-        this.currentUser = user;
         if(user.photoURL) {
           if(user.photoURL.includes("google")) this.socialProvider = "Google";
           else if(user.photoURL.includes("twimg")) this.socialProvider = "Twitter";
@@ -49,6 +59,15 @@ export class SettingsPage {
     });
   }
 
+  async checkFingerprint() {
+    try {
+      await this.platform.ready();
+      this.fingerprintAvailable = await this.fingerprintAIO.isAvailable() == "OK";
+      console.log("what up")
+    }
+    catch(e) { console.error(e); }
+  }
+
   setDarkMode() {
     this.storage.set('darkMode', this.settings.darkMode);
     console.log(`dark mode set to ${this.settings.darkMode}`);
@@ -57,32 +76,32 @@ export class SettingsPage {
   setCurrency(value: any) {
     this.storage.set('currency', value);
     console.log(`currency mode set to ${this.settings.currency}`);
+    this.settingsProvider.setActiveCurrency(this.settings.currency == 'USD' ? 'USD' : 'BTC');
+  }
+
+  setFingerprint() {
+    this.settings.fingerprint = !this.settings.fingerprint; // prevent toggle
+    this.fingerprintAIO.show(this.fingerprintOptions)
+      .then((result) => {
+        console.log(result);
+        this.settings.fingerprint = !this.settings.fingerprint;
+        this.storage.set('fingerprint', this.settings.fingerprint);
+        this.settingsProvider.setFingerprint(this.settings.fingerprint);
+        console.log(`fingerprint set to ${this.settings.fingerprint}`);
+      })
+      .catch(err => console.log(err));
   }
 
   switchToPortfolio() {
     this.navCtrl.parent.select(1);
   }
 
-  showConfirm() {
-    const confirm = this.alertCtrl.create({
-      title: 'Remove Account?',
-      message: 'All portfolio data will be destroyed and account will be unlinked.',
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: () => console.log('Disagree clicked')
-        },
-        {
-          text: 'Ok',
-          handler: () => this.removeAccount()
-        }
-      ]
-    });
-    confirm.present();
+  rateApp() {
+    this.market.open('com.ssparvez.cryptofy');
   }
 
-  removeAccount() {
-    this.auth.removeUserData(this.currentUser); // might not need to pass user
-    console.log('Removing account...');
+  shareApp() {
+    this.socialSharing.share("Download via: ", "Check out Cryptofy!", null, "www.google.com")
+      .then(() => console.log('shared'));
   }
 }

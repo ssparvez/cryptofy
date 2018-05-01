@@ -13,7 +13,7 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 @Injectable()
 export class AuthService {
-  user: Observable <User> ;
+  user: Observable<User>;
   toast: Toast;
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, public toastCtrl: ToastController, private platform: Platform, private gplus: GooglePlus, private facebook: Facebook, private twitter: TwitterConnect) {
@@ -110,18 +110,6 @@ export class AuthService {
       photoURL: user.photoURL,
     };
     return userRef.set(data, {merge: true});
-  }
-
-  async removeUserData(user) {
-    await this.db.collection('holdings', ref => ref.where('userId', '==', user.uid)).ref.get()
-      .then((querySnapshot) => {
-        const batch = this.db.firestore.batch();
-        querySnapshot.forEach(holding => console.log(holding));
-      });
-    //batch.commit();
-    //this.db.doc(`users/${user.uid}`).delete()
-    //this.afAuth.auth.currentUser.delete();
-
   }
   
   signOut() {

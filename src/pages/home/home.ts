@@ -3,6 +3,7 @@ import { NavController, ToastController, ActionSheetController } from 'ionic-ang
 import { DataProvider } from '../../providers/data-provider';
 import { NewsPage } from '../news/news';
 import { Storage } from '@ionic/storage';
+import { SettingsProvider } from '../../providers/settings-provider';
 
 
 @Component({
@@ -11,11 +12,12 @@ import { Storage } from '@ionic/storage';
 })
 export class HomePage {
   coins: any;
-  currency: string = "usd";
+  currency: String = "USD";
   showSpinner: boolean = true;
   searchInput: string = "";
 
-  constructor(public navCtrl: NavController, private dataProvider: DataProvider, public storage: Storage, public toastCtrl: ToastController, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, private dataProvider: DataProvider, public storage: Storage, public toastCtrl: ToastController, 
+    public actionSheetCtrl: ActionSheetController, private settingsProvider: SettingsProvider) {
   }
   
   ionViewWillEnter() { // on page load
@@ -25,15 +27,7 @@ export class HomePage {
       console.log(data);
       this.coins = data;
       // load the currency preference
-      this.storage.ready().then(() => {
-        this.storage.get('currency').then(currency => {
-          console.log('Your curr is', currency);
-          // problem when storage value not set
-          if(currency !== null && currency !== undefined && currency.length !== 0) {
-            this.currency = currency; 
-          }
-        })
-      });
+      this.settingsProvider.getActiveCurrency().subscribe(val => this.currency = val);
     });
   }
 

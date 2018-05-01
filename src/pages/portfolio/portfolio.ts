@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, ActionSheetController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 //import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
@@ -8,6 +8,9 @@ import { Holding } from '../../models/holding';
 import { DataProvider } from '../../providers/data-provider';
 import { HoldingInfoPage } from '../holding-info/holding-info';
 import { EmailLoginPage } from '../email-login/email-login';
+import { SettingsProvider } from '../../providers/settings-provider';
+import { User } from '../../models/user';
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 
 @Component({
   selector: 'page-portfolio',
@@ -23,40 +26,51 @@ export class PortfolioPage {
     type: 'doughnut',
     labels: [],
     data: [],
-    colors: [{
-      backgroundColor: ['#5628B4', '#AA00FF', '#FF1744', '#FF9800', '#FFEB3B', '#64DD17', '#00BFA5', '#448AFF']
-    }],
+    colors: [{ backgroundColor: ['#5628B4', '#AA00FF', '#FF1744', '#FF9800', '#FFEB3B', '#64DD17', '#00BFA5', '#448AFF'] }],
     options: {
-      legend: {
-        display: false
-      },
+      legend: { display: false },
       cutoutPercentage: 80,
-      animation: {
-        animateScale: true
-      },
-      elements: {
-        arc: {
-          borderWidth: 0
-        }
-      }
+      animation: { animateScale: true },
+      elements: { arc: { borderWidth: 0 } },
+      tooltips: { enabled: false }
     }
   }
 
   showSpinner = true;
   totalValue = 0;
   coinSymbols = [];
+  currency: String = 'USD';
+  activeIndex = -1;
 
-  constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, public dataProvider: DataProvider, private platform: Platform) {
+  fingerprintOptions = {
+    clientId: 'Fingerprint-Demo',
+    clientSecret: 'password', //Only necessary for Android
+    disableBackup: true //Only for Android(optional))
   }
+  showFingerprint: Boolean = false;
+
+  constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, 
+    public dataProvider: DataProvider, private platform: Platform, private settingsProvider: SettingsProvider, 
+    public actionSheetCtrl: ActionSheetController, private fingerprintAIO: FingerprintAIO) {
+      this.settingsProvider.getActiveCurrency().subscribe(val => this.currency = val);
+    }
   
   ionViewWillEnter() {
+    this.settingsProvider.getFingerprint().subscribe(fingerprint => {
+      console.log(fingerprint);
+      if(fingerprint == true) {
+        this.showFingerprint = true;
+        this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false)
+      }
+    });
+    this.showSpinner = true;
     this.auth.user
       .switchMap(user => this.getHoldings(user))
       .switchMap(holdings => this.retrieveHoldingPrices(holdings))
       .subscribe(data => this.calculateHoldingValues(data), err => {});
   }
 
-  getHoldings(user) {
+  getHoldings(user: User) {
     console.log(user);
     if(user != null) {
       this.holdingCollection = this.db.collection('holdings', ref => ref.where('userId', '==', user.uid));
@@ -71,32 +85,40 @@ export class PortfolioPage {
     else this.showSpinner = false
   }
 
-  retrieveHoldingPrices(holdings) {
+  retrieveHoldingPrices(holdings: Holding[]) {
     this.holdings = holdings;
     console.log(holdings);
-    this.showSpinner = false; // might have to move this
     if(holdings.length > 0) {
       this.sorted = false;
       this.coinSymbols = holdings.map(holding => holding.coin.symbol);
-      return this.dataProvider.getPortfolioCoins(this.coinSymbols);
+      return this.dataProvider.getPortfolioCoins(this.coinSymbols, this.currency);
     }
+    else this.showSpinner = false;
   }
 
-  calculateHoldingValues(data) {
+  calculateHoldingValues(data: any) {
     console.log(data);
     this.totalValue = 0;
+    this.chart.data = [];
     this.holdings.forEach(holding => { // calculate values
-      const price = data['DISPLAY'][holding.coin.symbol]['USD']['PRICE'].replace(/[^0-9\.-]+/g, "");
+      const price = data['DISPLAY'][holding.coin.symbol][this.currency.toString()]['PRICE'].replace(/[^0-9\.-]+/g, "");
       holding.value = holding.amount * parseFloat(price); // calculate current value
       this.totalValue += holding.value;
     });
     this.holdings.sort((a, b) => b.value - a.value); // sort holdings descending
     this.sorted = true;
-    this.chart.data = this.holdings.map(holding => { // populate chart data
-      this.chart.labels.push(holding.coin.name);
-      return parseFloat(holding.value.toFixed(2));
-    })
+    this.chart.data = this.holdings.map(holding => parseFloat(holding.value.toFixed(2)))
+    this.showSpinner = false; // might have to move this
     console.log(this.chart.data);
+  }
+
+   // events
+   public chartClicked(e: any): void {
+     if(e.active.length > 0) {
+       console.log(e.active[0]._index);
+       this.activeIndex = e.active[0]._index;
+       setTimeout(() => this.activeIndex = -1, 500);
+     }
   }
 
   openCoinSelectionPage() {
@@ -106,7 +128,32 @@ export class PortfolioPage {
   openEmailLoginPage() {
     this.navCtrl.push(EmailLoginPage);
   }
-
+  openHoldingOptions(holding, index) {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: `${holding.coin.name} Holding Options`,
+      buttons: [
+        {
+          text: 'Edit',
+          icon: 'create',
+          handler: () => this.openHoldingInfoPage(holding)
+        },
+        {
+          text: 'Remove',
+          icon: 'remove',
+          role: 'destructive',
+          handler: () => this.removeHolding(holding, index)
+        },
+        {
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => console.log('Cancel clicked')
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+  
   openHoldingInfoPage(holding) {
     this.navCtrl.push(HoldingInfoPage, {
       coin: {
@@ -128,6 +175,5 @@ export class PortfolioPage {
   signInWith(social) {
     if(this.platform.is("cordova")) this.auth.nativeSocialSignIn(social);
     else this.auth.webSocialSignIn(social);
-    this.ionViewWillEnter(); //reloadspage after auth
   }
 }

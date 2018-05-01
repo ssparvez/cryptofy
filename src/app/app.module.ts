@@ -5,9 +5,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
-import { GooglePlus } from '@ionic-native/google-plus';
-import { Facebook } from '@ionic-native/facebook';
-import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 // pipes
 import { FilterPipe} from '../pipes/filter.pipe';
@@ -23,13 +20,21 @@ import { CoinSelectionPage } from '../pages/coin-selection/coin-selection';
 import { HoldingInfoPage } from '../pages/holding-info/holding-info';
 import { EmailLoginPage } from '../pages/email-login/email-login';
 
-// providers
+// custom providers
 import { DataProvider } from '../providers/data-provider';
 import { SettingsProvider } from '../providers/settings-provider';
 
+// ionic native modules
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+//import { AdMobFree } from '@ionic-native/admob-free'
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook } from '@ionic-native/facebook';
+import { TwitterConnect } from '@ionic-native/twitter-connect';
+import { Market } from '@ionic-native/market';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 
 // firebase
 import { AngularFireModule } from 'angularfire2';
@@ -37,7 +42,6 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { firebaseConfig } from '../environment';
 import { CoreModule } from '../core/core.module';
-
 
 @NgModule({
   declarations: [
@@ -85,7 +89,11 @@ import { CoreModule } from '../core/core.module';
     InAppBrowser,
     GooglePlus,
     Facebook,
-    TwitterConnect
+    TwitterConnect,
+    //AdMobFree,
+    Market,
+    SocialSharing,
+    FingerprintAIO
   ]
 })
 export class AppModule {}

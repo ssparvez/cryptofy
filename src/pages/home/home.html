@@ -28,7 +28,7 @@
       <ion-card-content>
         <ion-row no-padding>
           <ion-col no-padding>
-            <span class="coin-price">{{currency == 'usd'? ('$ ' + coin.price_usd): ('฿ ' + coin.price_btc)}}</span>
+            <span class="coin-price">{{currency == 'USD'? ('$ ' + coin.price_usd) : ('฿ ' + coin.price_btc)}}</span>
           </ion-col>
           <ion-col col-1 no-padding align-self-center>
             <ion-icon name='star-outline' float-right style="font-size: 20px;" (tap)="addToFavorites(coin.symbol)"></ion-icon>

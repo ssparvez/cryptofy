@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { newsAPIKey } from '../environment';
 /*
   Generated class for the CryptodataProvider provider.
 
@@ -9,14 +9,14 @@ import { Injectable } from '@angular/core';
 */
 @Injectable()
 export class DataProvider {
-  //url = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,ETH,LTC&tsyms=USD";
   dataUrl = "https://api.coinmarketcap.com/v1/ticker/?limit=0";
-  newsUrl = 'https://newsapi.org/v2';
+  newsUrl = "https://newsapi.org/v2";
+  holdingsUrl = "https://min-api.cryptocompare.com";
   constructor(public http: HttpClient) {
   }
 
-  getPortfolioCoins(coinSymbols) {
-    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coinSymbols}&tsyms=USD`;
+  getPortfolioCoins(coinSymbols, currency) {
+    const url = `${this.holdingsUrl}/data/pricemultifull?fsyms=${coinSymbols}&tsyms=${currency}`;
     console.log("coin symbol url" + url);
     return this.http.get(url);
   }
@@ -25,16 +25,15 @@ export class DataProvider {
     return this.http.get(this.dataUrl);
   }
   getCoinNews(coin: any) {
-    var currentDate = new Date();
+    const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 5);
-    console.log(currentDate);
     console.log(currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + (currentDate.getDate() < 10 ? '0' + currentDate.getDate() : currentDate.getDate()));
     return this.http.get(this.newsUrl + '/everything?' +
-          'q=' + '\+' + coin.id + ' OR ' + coin.symbol + '&' +
+          'q=' + '\+' + coin.id + ' OR ' + coin.symbol + ' OR crypto' + '&' +
           'from=' + currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + (currentDate.getDate() < 10 ? '0' + currentDate.getDate() : currentDate.getDate()) + '&' +
           'sortBy=popularity&' +
           'language=en&' +
-          'apiKey=7c15a387033f4c7e873d2f7abda84009');
+          'apiKey=' + newsAPIKey);
   }
 
 }
