@@ -40,7 +40,7 @@
   </ng-template>
   <!-- User logged in -->
   <ng-template #authenticated>
-    <div *ngIf="auth.user">
+    <div *ngIf="auth.user" style="height: 100%;">
       <div *ngIf="!showFingerprint; else fingerprintMessage">
         <div *ngIf="(holdings.length > 0); else emptyState">
           <h1 padding-horizontal style="font-weight: 700;" class="fadeIn">Value: {{ currency == 'USD' ? (totalValue | currency) : '฿' + (totalValue | number:'1.0-5')}}</h1>
@@ -75,9 +75,14 @@
         </ng-template>
       </div>
       <ng-template #fingerprintMessage>
-        <h5 text-center style="color: grey; font-weight:300; margin-top: 25px;" margin-top>Fingerprint Required.</h5>
+        <h3 text-center style="color: grey; font-weight:300; margin-top: 25px;" margin-top>Fingerprint Required.</h3>
+        <ion-grid style="height: 100%;">
+            <ion-row justify-content-center align-items-center style="height: 100%;">
+                <ion-icon color="secondary" name='finger-print' style="font-size: 60px;" (tap)="openFingerprintDialog()"></ion-icon>
+            </ion-row>
+          </ion-grid>
       </ng-template>
-      <ion-fab top right>
+      <ion-fab *ngIf="!showFingerprint" top right>
         <button ion-fab mini color="secondary" (tap)="openCoinSelectionPage()">
           <ion-icon name="add"></ion-icon>
         </button>

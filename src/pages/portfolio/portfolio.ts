@@ -57,17 +57,20 @@ export class PortfolioPage {
   
   ionViewWillEnter() {
     this.settingsProvider.getFingerprint().subscribe(fingerprint => {
-      console.log(fingerprint);
       if(fingerprint == true) {
         this.showFingerprint = true;
-        this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false)
+        this.openFingerprintDialog()
       }
-    });
+    }).unsubscribe(); // to prevent trigger from another page
     this.showSpinner = true;
     this.auth.user
       .switchMap(user => this.getHoldings(user))
       .switchMap(holdings => this.retrieveHoldingPrices(holdings))
       .subscribe(data => this.calculateHoldingValues(data), err => {});
+  }
+  
+  openFingerprintDialog() {
+    this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false);
   }
 
   getHoldings(user: User) {
