@@ -19,6 +19,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { CoinSelectionPage } from '../pages/coin-selection/coin-selection';
 import { HoldingInfoPage } from '../pages/holding-info/holding-info';
 import { EmailLoginPage } from '../pages/email-login/email-login';
+import { LoginPage } from '../pages/login/login';
 
 // custom providers
 import { DataProvider } from '../providers/data-provider';
@@ -53,6 +54,7 @@ import { CoreModule } from '../core/core.module';
     CoinSelectionPage,
     HoldingInfoPage,
     EmailLoginPage,
+    LoginPage,
     TabsPage,
     TimeAgoPipe,
     FilterPipe
@@ -78,7 +80,8 @@ import { CoreModule } from '../core/core.module';
     TabsPage,
     CoinSelectionPage,
     HoldingInfoPage,
-    EmailLoginPage
+    EmailLoginPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
@@ -93,7 +96,7 @@ import { CoreModule } from '../core/core.module';
     //AdMobFree,
     Market,
     SocialSharing,
-    FingerprintAIO
+    FingerprintAIO,
   ]
 })
 export class AppModule {}

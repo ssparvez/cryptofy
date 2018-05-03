@@ -25,8 +25,8 @@ export class AuthService {
     });
   }
 
-  createAccountWithEmail(email: string, password: string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+  async createAccountWithEmail(credentials) {
+    return await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
       .then(credential => {
         console.log(credential);
         this.updateUserData(credential);
@@ -40,8 +40,8 @@ export class AuthService {
       });
   }
 
-  signInWithEmail(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+  async signInWithEmail(credentials) {
+    return await this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(credential => {
         this.updateUserData(credential);
         this.toast.setMessage('Hi!');
@@ -80,14 +80,14 @@ export class AuthService {
       .catch(err => console.log(err));
   }
 
-  webSocialSignIn(social: string) {
+  async webSocialSignIn(social: string) {
     const provider = {
       'google': new firebase.auth.GoogleAuthProvider(),
       'facebook': new firebase.auth.FacebookAuthProvider(),
       'twitter': new firebase.auth.TwitterAuthProvider()
     }
     const toast = this.toastCtrl.create({duration: 1000, position: 'top'});
-    return this.afAuth.auth.signInWithRedirect(provider[social])
+    return await this.afAuth.auth.signInWithRedirect(provider[social])
       .then(credential => {
         this.updateUserData(credential.user);
         toast.setMessage('Successfully signed in :)');

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform, ActionSheetController } from 'ionic-angular';
+import { NavController, ActionSheetController } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 //import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
@@ -7,10 +7,10 @@ import { CoinSelectionPage } from '../coin-selection/coin-selection';
 import { Holding } from '../../models/holding';
 import { DataProvider } from '../../providers/data-provider';
 import { HoldingInfoPage } from '../holding-info/holding-info';
-import { EmailLoginPage } from '../email-login/email-login';
 import { SettingsProvider } from '../../providers/settings-provider';
 import { User } from '../../models/user';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-portfolio',
@@ -18,7 +18,6 @@ import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 })
 export class PortfolioPage {
   holdingCollection: AngularFirestoreCollection<Holding>;
-  //holdings: Observable<Holding[]>;
   holdings: Holding[] = [];
   sorted: boolean = false;
 
@@ -40,7 +39,7 @@ export class PortfolioPage {
   totalValue = 0;
   coinSymbols = [];
   currency: String = 'USD';
-  activeIndex = -1;
+  activeIndex = -1; // for arc tap
 
   fingerprintOptions = {
     clientId: 'Fingerprint-Demo',
@@ -50,10 +49,10 @@ export class PortfolioPage {
   showFingerprint: Boolean = false;
 
   constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, 
-    public dataProvider: DataProvider, private platform: Platform, private settingsProvider: SettingsProvider, 
+    public dataProvider: DataProvider, private settingsProvider: SettingsProvider, 
     public actionSheetCtrl: ActionSheetController, private fingerprintAIO: FingerprintAIO) {
       this.settingsProvider.getActiveCurrency().subscribe(val => this.currency = val);
-    }
+  }
   
   ionViewWillEnter() {
     this.settingsProvider.getFingerprint().subscribe(fingerprint => {
@@ -128,9 +127,6 @@ export class PortfolioPage {
     this.navCtrl.push(CoinSelectionPage, { coinSymbols: this.coinSymbols });
   }
 
-  openEmailLoginPage() {
-    this.navCtrl.push(EmailLoginPage);
-  }
   openHoldingOptions(holding, index) {
     let actionSheet = this.actionSheetCtrl.create({
       title: `${holding.coin.name} Holding Options`,
@@ -174,9 +170,7 @@ export class PortfolioPage {
     this.db.doc(`holdings/${holding.id}`).delete();
   }
 
-
-  signInWith(social) {
-    if(this.platform.is("cordova")) this.auth.nativeSocialSignIn(social);
-    else this.auth.webSocialSignIn(social);
+  openLoginPage() {
+    this.navCtrl.push(LoginPage);
   }
 }

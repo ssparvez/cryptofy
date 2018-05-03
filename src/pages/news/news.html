@@ -9,7 +9,7 @@
 <ion-content>
   <ion-card *ngFor="let article of articles" (tap)="openBrowser(article.url)">
     <ion-item>
-      <h2 text-nowrap style="font-weight: bold;">{{article?.title}}</h2>
+      <h2 text-nowrap style="font-weight: bold; text-overflow: ellipsis; overflow: hidden;">{{article?.title}}</h2>
       <p *ngIf="article.author">by {{article.author}}</p>
     </ion-item>
     <img [src]="article.urlToImage" onError="this.src='assets/imgs/stock-article.jpg'">

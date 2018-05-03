@@ -27,9 +27,18 @@ platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
+
+# secret codes n stuff
 src/environment.ts
+
 www/
 $RECYCLE.BIN/
+
+# android signing key
+my-release-key.keystore
+
+# android release build
+*.apk
 
 .DS_Store
 Thumbs.db

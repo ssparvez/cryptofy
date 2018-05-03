@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Sign in to get started..</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list no-border>
+    <ion-item (tap)="openEmailLoginPage()">
+      <ion-icon name='mail' item-start></ion-icon>
+      <ion-label>Email</ion-label>
+    </ion-item>
+    <ion-item (tap)="signInWith('google')">
+      <ion-icon name='logo-google' item-start color="google"></ion-icon>
+      <ion-label>Google</ion-label>
+    </ion-item>
+    <ion-item (tap)="signInWith('facebook')">
+      <ion-icon name='logo-facebook' item-start color="facebook"></ion-icon>
+      <ion-label>Facebook</ion-label>
+    </ion-item>
+    <ion-item (tap)="signInWith('twitter')">
+      <ion-icon name='logo-twitter' item-start color="twitter"></ion-icon>
+      <ion-label>Twitter</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

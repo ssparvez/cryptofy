@@ -6,6 +6,8 @@ import { SettingsProvider } from '../../providers/settings-provider';
 import { Market } from '@ionic-native/market';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { LoginPage } from '../login/login';
 
 
 @Component({
@@ -31,7 +33,7 @@ export class SettingsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
     public storage: Storage, private settingsProvider: SettingsProvider, private market: Market, private socialSharing: SocialSharing,
-    private platform: Platform, private fingerprintAIO: FingerprintAIO) {
+    private platform: Platform, private fingerprintAIO: FingerprintAIO, private iab: InAppBrowser) {
       if(this.platform.is("cordova")) this.checkFingerprint();
   }
 
@@ -92,8 +94,8 @@ export class SettingsPage {
       .catch(err => console.log(err));
   }
 
-  switchToPortfolio() {
-    this.navCtrl.parent.select(1);
+  openLoginPage() {
+    this.navCtrl.push(LoginPage);
   }
 
   rateApp() {
@@ -103,5 +105,9 @@ export class SettingsPage {
   shareApp() {
     this.socialSharing.share("Download via: ", "Check out Cryptofy!", null, "www.google.com")
       .then(() => console.log('shared'));
+  }
+
+  openPrivacyPolicy() {
+    this.iab.create("https://ssparvez.github.io/");
   }
 }

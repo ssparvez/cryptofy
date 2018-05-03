@@ -13,7 +13,7 @@
     <ng-template #guest>
       <ion-item no-lines>
         <ion-row>
-          <button ion-button color="secondary" full (tap)="switchToPortfolio()">
+          <button ion-button color="secondary" full (tap)="openLoginPage()">
             <ion-icon name='log-in' item-start></ion-icon>
             Sign in to get started
           </button>
@@ -36,7 +36,7 @@
             </button>
           </ion-item>
         </ion-card>
-        <button ion-button full clear color="secondary">Join Cryptofy +</button>
+        <button ion-button full clear color="premium">Join Cryptofy Premium</button>
       </div>
     </ng-template>
     <ion-list-header>General</ion-list-header>
@@ -74,5 +74,9 @@
       <ion-label>Share</ion-label>
       <ion-icon name='share' item-start></ion-icon>
     </ion-item>
+    <ion-item (tap)="openPrivacyPolicy()">
+        <ion-label>Privacy Policy</ion-label>
+        <ion-icon name='lock' item-start></ion-icon>
+      </ion-item>
   </ion-list>
 </ion-content>

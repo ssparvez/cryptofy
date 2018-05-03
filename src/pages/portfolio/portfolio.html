@@ -17,25 +17,11 @@
       <div class="dot2"></div>
     </div>
     <ng-template #showSignIn>
-      <h3 text-center>Sign in to get started...</h3>
-      <ion-list no-border>
-        <ion-item (tap)="openEmailLoginPage()">
-          <ion-icon name='mail' item-start></ion-icon>
-          <ion-label>Email</ion-label>
-        </ion-item>
-        <ion-item (tap)="signInWith('google')">
-          <ion-icon name='logo-google' item-start color="google"></ion-icon>
-          <ion-label>Google</ion-label>
-        </ion-item>
-        <ion-item (tap)="signInWith('facebook')">
-          <ion-icon name='logo-facebook' item-start color="facebook"></ion-icon>
-          <ion-label>Facebook</ion-label>
-        </ion-item>
-        <ion-item (tap)="signInWith('twitter')">
-          <ion-icon name='logo-twitter' item-start color="twitter"></ion-icon>
-          <ion-label>Twitter</ion-label>
-        </ion-item>
-      </ion-list>
+      <ion-grid style="height: 100%;">
+        <ion-row justify-content-center align-items-center style="height: 100%;">
+          <button ion-button color="secondary" (tap)="openLoginPage()">Join Cryptofy</button>
+        </ion-row>
+      </ion-grid>
     </ng-template>
   </ng-template>
   <!-- User logged in -->
@@ -77,10 +63,10 @@
       <ng-template #fingerprintMessage>
         <h3 text-center style="color: grey; font-weight:300; margin-top: 25px;" margin-top>Fingerprint Required.</h3>
         <ion-grid style="height: 100%;">
-            <ion-row justify-content-center align-items-center style="height: 100%;">
-                <ion-icon color="secondary" name='finger-print' style="font-size: 60px;" (tap)="openFingerprintDialog()"></ion-icon>
-            </ion-row>
-          </ion-grid>
+          <ion-row justify-content-center align-items-center style="height: 100%;">
+            <ion-icon color="secondary" name='finger-print' style="font-size: 60px;" (tap)="openFingerprintDialog()"></ion-icon>
+          </ion-row>
+        </ion-grid>
       </ng-template>
       <ion-fab *ngIf="!showFingerprint" top right>
         <button ion-fab mini color="secondary" (tap)="openCoinSelectionPage()">

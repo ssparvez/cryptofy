@@ -23,13 +23,10 @@ export class EmailLoginPage {
     this.navCtrl.popToRoot();
   }
 
-  submitCredentials() {
-    if(this.emailForm.value.createOrLogIn == "logIn") {
-      this.auth.signInWithEmail(this.emailForm.value.email, this.emailForm.value.password);
-    }
-    else {
-      this.auth.createAccountWithEmail(this.emailForm.value.email, this.emailForm.value.password);
-    }
+  async submitCredentials() {
+    const credentials = {email: this.emailForm.value.email, password: this.emailForm.value.password}
+    if(this.emailForm.value.createOrLogIn == "logIn") await this.auth.signInWithEmail(credentials)
+    else await this.auth.createAccountWithEmail(credentials)
     this.navCtrl.popToRoot();
   }
 }
