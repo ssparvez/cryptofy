@@ -103,11 +103,11 @@ export class SettingsPage {
   }
 
   shareApp() {
-    this.socialSharing.share("Download via: ", "Check out Cryptofy!", null, "www.google.com")
+    this.socialSharing.share("Download via: ", "Check out Cryptofy!", null, "https://ssparvez.github.io/cryptofy")
       .then(() => console.log('shared'));
   }
 
   openPrivacyPolicy() {
-    this.iab.create("https://ssparvez.github.io/");
+    this.iab.create("https://ssparvez.github.io/cryptofy/privacy");
   }
 }
