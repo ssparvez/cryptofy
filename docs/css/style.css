@@ -374,11 +374,6 @@ header {
     border-bottom: 1px solid #f8e3f0;
 }
 
-.perspective-phone {
-    position: relative;
-    z-index: -1;
-}
-
 @media (min-width:992px) {
     .perspective-phone {
         margin-top: -150px;
