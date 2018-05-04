@@ -1,5 +1,6 @@
 # Cryptofy
 A cross platform mobile app to track cryptocurrency data using the [Ionic Framework](https://ionicframework.com/).
+
 Downloads will be available [here](https://ssparvez.github.io/cryptofy) soon.
 
 ## The Stack
