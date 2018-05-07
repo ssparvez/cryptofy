@@ -8,6 +8,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LoginPage } from '../login/login';
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2';
+import { PremiumPage } from '../premium/premium';
 
 
 @Component({
@@ -30,14 +32,22 @@ export class SettingsPage {
     clientSecret: 'password', //Only necessary for Android
     disableBackup: true //Only for Android(optional))
   }
+  isMobile = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
     public storage: Storage, private settingsProvider: SettingsProvider, private market: Market, private socialSharing: SocialSharing,
-    private platform: Platform, private fingerprintAIO: FingerprintAIO, private iab: InAppBrowser) {
-      if(this.platform.is("cordova")) this.checkFingerprint();
+    private platform: Platform, private fingerprintAIO: FingerprintAIO, private inAppBrowser: InAppBrowser, private store: InAppPurchase2) {
+      this.platform.ready().then(() => {
+        if(this.platform.is("cordova")) {
+          this.isMobile = true;
+          this.checkFingerprint();
+        }
+      })
   }
 
   ionViewWillEnter() {
+    const product = this.store.get("com.ssparvez.cryptofy.premium");
+    console.log("product" + product);
     this.auth.user.subscribe(user => {
       console.log(user);
       if(user) {
@@ -63,7 +73,6 @@ export class SettingsPage {
 
   async checkFingerprint() {
     try {
-      await this.platform.ready();
       this.fingerprintAvailable = await this.fingerprintAIO.isAvailable() == "OK";
       console.log("what up")
     }
@@ -98,6 +107,10 @@ export class SettingsPage {
     this.navCtrl.push(LoginPage);
   }
 
+  openPremiumPage() {
+    this.navCtrl.push(PremiumPage);
+  }
+
   rateApp() {
     this.market.open('com.ssparvez.cryptofy');
   }
@@ -108,6 +121,6 @@ export class SettingsPage {
   }
 
   openPrivacyPolicy() {
-    this.iab.create("https://ssparvez.github.io/cryptofy/privacy");
+    this.inAppBrowser.create("https://ssparvez.github.io/cryptofy/privacy");
   }
 }

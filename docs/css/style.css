@@ -236,7 +236,9 @@ p.lead {
 header {
     padding: 100px 0 0;
     text-align: center;
-    color: #FFF;
+    background: linear-gradient(to bottom right, #bce4c4,  #2b7dab);
+    /*background-image: url("../images/splash.png");*/
+    background-size: 100vw 100%;
 }
 
 .bg-gradient {

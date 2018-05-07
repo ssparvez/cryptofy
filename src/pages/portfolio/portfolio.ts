@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController } from 'ionic-angular';
+import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-//import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
 import { CoinSelectionPage } from '../coin-selection/coin-selection';
 import { Holding } from '../../models/holding';
@@ -46,21 +46,21 @@ export class PortfolioPage {
     clientSecret: 'password', //Only necessary for Android
     disableBackup: true //Only for Android(optional))
   }
+  
   showFingerprint: Boolean = false;
 
   constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, 
     public dataProvider: DataProvider, private settingsProvider: SettingsProvider, 
-    public actionSheetCtrl: ActionSheetController, private fingerprintAIO: FingerprintAIO) {
+    public actionSheetCtrl: ActionSheetController, private fingerprintAIO: FingerprintAIO, private platform: Platform) {
       this.settingsProvider.getActiveCurrency().subscribe(val => this.currency = val);
+      this.openFingerprintDialog();
+      this.platform.resume.subscribe(() => {
+        this.openFingerprintDialog();
+      })
   }
   
   ionViewWillEnter() {
-    this.settingsProvider.getFingerprint().subscribe(fingerprint => {
-      if(fingerprint == true) {
-        this.showFingerprint = true;
-        this.openFingerprintDialog()
-      }
-    }).unsubscribe(); // to prevent trigger from another page
+
     this.showSpinner = true;
     this.auth.user
       .switchMap(user => this.getHoldings(user))
@@ -69,7 +69,12 @@ export class PortfolioPage {
   }
   
   openFingerprintDialog() {
-    this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false);
+    this.settingsProvider.getFingerprint().subscribe(fingerprint => {
+      if(fingerprint == true) {
+        this.showFingerprint = true;
+        this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false);
+      }
+    }).unsubscribe(); // to prevent trigger from another page
   }
 
   getHoldings(user: User) {

@@ -20,6 +20,7 @@ import { CoinSelectionPage } from '../pages/coin-selection/coin-selection';
 import { HoldingInfoPage } from '../pages/holding-info/holding-info';
 import { EmailLoginPage } from '../pages/email-login/email-login';
 import { LoginPage } from '../pages/login/login';
+import { PremiumPage } from '../pages/premium/premium';
 
 // custom providers
 import { DataProvider } from '../providers/data-provider';
@@ -36,6 +37,7 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 import { Market } from '@ionic-native/market';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2';
 
 // firebase
 import { AngularFireModule } from 'angularfire2';
@@ -55,6 +57,7 @@ import { CoreModule } from '../core/core.module';
     HoldingInfoPage,
     EmailLoginPage,
     LoginPage,
+    PremiumPage,
     TabsPage,
     TimeAgoPipe,
     FilterPipe
@@ -81,7 +84,8 @@ import { CoreModule } from '../core/core.module';
     CoinSelectionPage,
     HoldingInfoPage,
     EmailLoginPage,
-    LoginPage
+    LoginPage,
+    PremiumPage
   ],
   providers: [
     StatusBar,
@@ -97,6 +101,7 @@ import { CoreModule } from '../core/core.module';
     Market,
     SocialSharing,
     FingerprintAIO,
+    InAppPurchase2
   ]
 })
 export class AppModule {}
