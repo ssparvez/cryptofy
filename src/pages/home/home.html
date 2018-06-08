@@ -17,7 +17,7 @@
   </div>
   <ng-template #showCoins>
     <span style="float: right; padding-right: 13px; padding-bottom: 4px;">Past 24h</span>
-    <ion-card *ngFor="let coin of coins  | filter : searchInput | slice : 0 : upperBound" (tap)="openNewsPage(coin)" (press)="openCoinOptions(coin)">
+    <ion-card *ngFor="let coin of coins  | filter : searchInput | slice : 0 : upperBound" (tap)="openCoinInfoPage(coin)" (press)="openCoinOptions(coin)">
       <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
         <span>
           <b>{{coin.name}}</b> ({{coin.symbol}})</span>
@@ -30,9 +30,9 @@
           <ion-col no-padding>
             <span class="coin-price">{{currency == 'USD'? ('$ ' + coin.price_usd) : ('฿ ' + coin.price_btc)}}</span>
           </ion-col>
-          <ion-col col-1 no-padding align-self-center>
+          <!--<ion-col col-1 no-padding align-self-center>
             <ion-icon name='star-outline' float-right style="font-size: 20px;" (tap)="addToFavorites(coin.symbol)"></ion-icon>
-          </ion-col>
+          </ion-col>-->
         </ion-row>
       </ion-card-content>
     </ion-card>

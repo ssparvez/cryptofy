@@ -36,7 +36,7 @@
             </button>
           </ion-item>
         </ion-card>
-        <button *ngIf="isMobile" ion-button full clear color="premium" (tap)="openPremiumPage()">Join Cryptofy Premium</button>
+        <button *ngIf="!isPremium" ion-button full clear color="premium" (tap)="openPremiumPage()">Join Cryptofy Premium</button>
       </div>
     </ng-template>
     <ion-list-header>General</ion-list-header>

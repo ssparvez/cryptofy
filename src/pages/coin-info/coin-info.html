@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      {{coin.name}} Info
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list-header style="margin-bottom: 0px;">Data</ion-list-header>
+  <ion-card [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
+    <ion-card-content>
+        <ion-note>Rank</ion-note> # {{coin.rank}}
+        <span float-right><ion-note>Market Cap</ion-note> ${{coin.market_cap_usd | number}}</span>
+      <div text-center>
+        <span style="font-weight: 700; font-size: 40px;">{{currency == 'USD'? ('$' + coin.price_usd) : ('฿' + coin.price_btc)}}</span><br>
+        <span style="font-weight: 500; font-size: 20px;" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">
+          <ion-icon style="vertical-align: middle;" [name]="(coin.percent_change_24h < 0) ? 'arrow-round-down' : 'arrow-round-up'"
+            item-start></ion-icon>
+          <span style="vertical-align: middle;">{{(coin.percent_change_24h * -1) + '\%'}}</span>
+        </span>
+        <ion-note>Past 24h</ion-note><br>
+          <ion-note>24 Hour Volume</ion-note> ${{coin['24h_volume_usd'] | number}}<br>
+          <ion-note>Available Supply</ion-note> {{(coin.available_supply | number) + ' ' + coin.symbol}}<br>
+          <ion-note>Max Supply</ion-note> {{(coin.max_supply | number) + ' ' + coin.symbol}}
+          <canvas baseChart style="margin-top: 25px;" [datasets]="chart.data" [chartType]="chart.type" [labels]="chart.labels" [colors]="chart.colors"
+            [options]="chart.options">
+          </canvas>
+          <ion-note>Past 7 Days</ion-note>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-list-header>News</ion-list-header>
+  <ion-card *ngFor="let article of articles" (tap)="openBrowser(article.url)">
+    <ion-item>
+      <h2 text-nowrap style="font-weight: bold; text-overflow: ellipsis; overflow: hidden;">{{article?.title}}</h2>
+      <p *ngIf="article.author">by {{article.author}}</p>
+    </ion-item>
+    <img [src]="article.urlToImage" onError="this.src='assets/imgs/stock-article.jpg'">
+
+    <ion-card-content>
+      <p>{{article.description}}</p>
+    </ion-card-content>
+    <ion-row>
+      <ion-col>
+        <ion-note>{{article.source.name}}</ion-note>
+      </ion-col>
+      <ion-col>
+
+      </ion-col>
+      <ion-col text-right>
+        <ion-note>
+          {{article.publishedAt.split('T')[0] | timeAgo}}
+        </ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

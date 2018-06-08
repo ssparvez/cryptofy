@@ -1,0 +1,20 @@
+page-contact {
+
+}
+
+.red- {
+    &text {
+        color: #FF4081;
+    }
+    &top {
+        border-top: 4px solid #FF4081;
+    }
+}
+.green- {
+    &text {
+        color: #1DE9B6;
+    }
+    &top {
+        border-top: 4px solid #1DE9B6;
+    }
+}

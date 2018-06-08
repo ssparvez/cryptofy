@@ -1,5 +1,10 @@
+$gray: #757575;
+
 .light-theme {
     ion-content, .toolbar-background {
       background-color: #fff;
+    }
+    ion-note {
+      color: $gray;
     }
   }

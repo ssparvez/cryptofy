@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from 'ionic-angular';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-// import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../core/auth.service';
 import { CoinSelectionPage } from '../coin-selection/coin-selection';
 import { Holding } from '../../models/holding';
@@ -11,6 +10,8 @@ import { SettingsProvider } from '../../providers/settings-provider';
 import { User } from '../../models/user';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { LoginPage } from '../login/login';
+import { PremiumProvider } from '../../providers/premium-provider';
+import { PremiumPage } from '../premium/premium';
 
 @Component({
   selector: 'page-portfolio',
@@ -46,21 +47,21 @@ export class PortfolioPage {
     clientSecret: 'password', //Only necessary for Android
     disableBackup: true //Only for Android(optional))
   }
-  
+
   showFingerprint: Boolean = false;
+  isPremium: Boolean = false;
+  wasPaused = true;
 
   constructor(public navCtrl: NavController, public db: AngularFirestore, public auth: AuthService, 
-    public dataProvider: DataProvider, private settingsProvider: SettingsProvider, 
+    public dataProvider: DataProvider, private settingsProvider: SettingsProvider, private premiumProvider: PremiumProvider,
     public actionSheetCtrl: ActionSheetController, private fingerprintAIO: FingerprintAIO, private platform: Platform) {
-      this.settingsProvider.getActiveCurrency().subscribe(val => this.currency = val);
-      this.openFingerprintDialog();
-      this.platform.resume.subscribe(() => {
-        this.openFingerprintDialog();
-      })
+      this.settingsProvider.getCurrency().subscribe(val => this.currency = val);
+      this.premiumProvider.getPremium().subscribe(val => this.isPremium = val);
+      this.platform.resume.subscribe(() => this.wasPaused = true);
   }
   
   ionViewWillEnter() {
-
+    this.openFingerprintDialog();
     this.showSpinner = true;
     this.auth.user
       .switchMap(user => this.getHoldings(user))
@@ -69,9 +70,10 @@ export class PortfolioPage {
   }
   
   openFingerprintDialog() {
-    this.settingsProvider.getFingerprint().subscribe(fingerprint => {
-      if(fingerprint == true) {
+    this.settingsProvider.getFingerprint().subscribe(fingerprintToggled => {
+      if(fingerprintToggled && this.wasPaused) {
         this.showFingerprint = true;
+        this.wasPaused = false;
         this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false);
       }
     }).unsubscribe(); // to prevent trigger from another page
@@ -177,5 +179,9 @@ export class PortfolioPage {
 
   openLoginPage() {
     this.navCtrl.push(LoginPage);
+  }
+
+  openPremiumPage() {
+    this.navCtrl.push(PremiumPage);
   }
 }

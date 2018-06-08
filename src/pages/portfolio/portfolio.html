@@ -44,6 +44,7 @@
           </ion-list>
           <ion-grid *ngIf="sorted" class="fadeIn">
             <ion-note text-center>* Update your holdings as you make transactions.</ion-note>
+            <button *ngIf="!isPremium && (holdings.length == 3)" ion-button full clear color="premium" (tap)="openPremiumPage()">Add more holdings</button>
           </ion-grid>
         </div>
         <ng-template #emptyState>
@@ -69,7 +70,7 @@
         </ion-grid>
       </ng-template>
       <ion-fab *ngIf="!showFingerprint" top right>
-        <button ion-fab mini color="secondary" (tap)="openCoinSelectionPage()">
+        <button [disabled]="!isPremium && (holdings.length == 3)" ion-fab mini color="secondary" (tap)="openCoinSelectionPage()">
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-fab>

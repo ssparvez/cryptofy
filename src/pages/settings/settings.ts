@@ -10,6 +10,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LoginPage } from '../login/login';
 import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2';
 import { PremiumPage } from '../premium/premium';
+import { productId } from '../../environment';
+import { PremiumProvider } from '../../providers/premium-provider';
 
 
 @Component({
@@ -33,10 +35,11 @@ export class SettingsPage {
     disableBackup: true //Only for Android(optional))
   }
   isMobile = false;
+  isPremium: Boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
     public storage: Storage, private settingsProvider: SettingsProvider, private market: Market, private socialSharing: SocialSharing,
-    private platform: Platform, private fingerprintAIO: FingerprintAIO, private inAppBrowser: InAppBrowser, private store: InAppPurchase2) {
+    private platform: Platform, private fingerprintAIO: FingerprintAIO, private inAppBrowser: InAppBrowser, private premiumProvider: PremiumProvider) {
       this.platform.ready().then(() => {
         if(this.platform.is("cordova")) {
           this.isMobile = true;
@@ -46,10 +49,7 @@ export class SettingsPage {
   }
 
   ionViewWillEnter() {
-    const product = this.store.get("com.ssparvez.cryptofy.premium");
-    console.log("product" + product);
     this.auth.user.subscribe(user => {
-      console.log(user);
       if(user) {
         if(user.photoURL) {
           if(user.photoURL.includes("google")) this.socialProvider = "Google";
@@ -59,6 +59,8 @@ export class SettingsPage {
         else this.socialProvider = "email";
       }
     });
+    this.premiumProvider.getPremium().subscribe(val => this.isPremium = val);
+
     this.storage.ready().then(()=> {
       for(let key in this.settings) {
         this.storage.get(key).then(setting => {
@@ -74,7 +76,6 @@ export class SettingsPage {
   async checkFingerprint() {
     try {
       this.fingerprintAvailable = await this.fingerprintAIO.isAvailable() == "OK";
-      console.log("what up")
     }
     catch(e) { console.error(e); }
   }
@@ -82,19 +83,18 @@ export class SettingsPage {
   setDarkMode() {
     this.storage.set('darkMode', this.settings.darkMode);
     console.log(`dark mode set to ${this.settings.darkMode}`);
-    this.settingsProvider.setActiveTheme(this.settings.darkMode ? "dark-theme" : 'light-theme');
+    this.settingsProvider.setTheme(this.settings.darkMode ? "dark-theme" : 'light-theme');
   }
   setCurrency(value: any) {
     this.storage.set('currency', value);
     console.log(`currency mode set to ${this.settings.currency}`);
-    this.settingsProvider.setActiveCurrency(this.settings.currency == 'USD' ? 'USD' : 'BTC');
+    this.settingsProvider.setCurrency(this.settings.currency == 'USD' ? 'USD' : 'BTC');
   }
 
   setFingerprint() {
     this.settings.fingerprint = !this.settings.fingerprint; // prevent toggle
     this.fingerprintAIO.show(this.fingerprintOptions)
-      .then((result) => {
-        console.log(result);
+      .then(result => {
         this.settings.fingerprint = !this.settings.fingerprint;
         this.storage.set('fingerprint', this.settings.fingerprint);
         this.settingsProvider.setFingerprint(this.settings.fingerprint);

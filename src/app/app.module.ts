@@ -12,7 +12,7 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 
 // pages
 import { PortfolioPage } from '../pages/portfolio/portfolio';
-import { NewsPage } from '../pages/news/news';
+import { CoinInfoPage } from '../pages/coin-info/coin-info';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
@@ -25,6 +25,7 @@ import { PremiumPage } from '../pages/premium/premium';
 // custom providers
 import { DataProvider } from '../providers/data-provider';
 import { SettingsProvider } from '../providers/settings-provider';
+import { PremiumProvider } from '../providers/premium-provider';
 
 // ionic native modules
 import { StatusBar } from '@ionic-native/status-bar';
@@ -51,7 +52,7 @@ import { CoreModule } from '../core/core.module';
     MyApp,
     HomePage,
     PortfolioPage,
-    NewsPage,
+    CoinInfoPage,
     SettingsPage,
     CoinSelectionPage,
     HoldingInfoPage,
@@ -78,7 +79,7 @@ import { CoreModule } from '../core/core.module';
     MyApp,
     HomePage,
     PortfolioPage,
-    NewsPage,
+    CoinInfoPage,
     SettingsPage,
     TabsPage,
     CoinSelectionPage,
@@ -101,7 +102,8 @@ import { CoreModule } from '../core/core.module';
     Market,
     SocialSharing,
     FingerprintAIO,
-    InAppPurchase2
+    InAppPurchase2,
+    PremiumProvider
   ]
 })
 export class AppModule {}
