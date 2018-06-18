@@ -35,11 +35,11 @@
           </canvas>
           <ion-list margin-top no-lines *ngIf="sorted">
             <ion-list-header>Your Holdings</ion-list-header>
-            <ion-item *ngFor="let holding of holdings; let i = index" class="fadeIn" (press)="openHoldingOptions(holding, i)" [ngStyle]="{'border-left': '10px solid' + (i < chart.colors[0].backgroundColor.length ? chart.colors[0].backgroundColor[i] : '#E0E0E0'), 'background-color': (i == activeIndex) ? '#9E9E9E' : 'transparent'}">
+            <ion-item *ngFor="let holding of holdings; let i = index" class="fadeIn" (press)="openHoldingOptions(holding)" [ngStyle]="{'border-left': '10px solid' + (i < chart.colors[0].backgroundColor.length ? chart.colors[0].backgroundColor[i] : '#E0E0E0'), 'background-color': (i == activeIndex) ? '#9E9E9E' : 'transparent'}">
               <strong>{{holding.coin.name}}</strong>
               <ion-note item-end>{{holding.amount}} {{holding.coin.symbol}}</ion-note>
               <span item-end margin-right>{{currency == 'USD' ? (holding.value | currency) : '฿' + (holding.value | number:'1.0-5')}}</span>
-              <ion-icon name='more' item-end (tap)="openHoldingOptions(holding, i)"></ion-icon>
+              <ion-icon name='more' item-end (tap)="openHoldingOptions(holding)"></ion-icon>
             </ion-item>
           </ion-list>
           <ion-grid *ngIf="sorted" class="fadeIn">

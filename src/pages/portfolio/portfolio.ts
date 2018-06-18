@@ -130,11 +130,7 @@ export class PortfolioPage {
      }
   }
 
-  openCoinSelectionPage() {
-    this.navCtrl.push(CoinSelectionPage, { coinSymbols: this.coinSymbols });
-  }
-
-  openHoldingOptions(holding, index) {
+  openHoldingOptions(holding) {
     let actionSheet = this.actionSheetCtrl.create({
       title: `${holding.coin.name} Holding Options`,
       buttons: [
@@ -147,7 +143,7 @@ export class PortfolioPage {
           text: 'Remove',
           icon: 'remove',
           role: 'destructive',
-          handler: () => this.removeHolding(holding, index)
+          handler: () => this.removeHolding(holding)
         },
         {
           text: 'Cancel',
@@ -159,7 +155,9 @@ export class PortfolioPage {
     });
     actionSheet.present();
   }
-  
+
+  removeHolding(holding) { this.db.doc(`holdings/${holding.id}`).delete(); }
+
   openHoldingInfoPage(holding) {
     this.navCtrl.push(HoldingInfoPage, {
       coin: {
@@ -171,17 +169,7 @@ export class PortfolioPage {
       holdingId: holding.id
     });
   }
-
-  removeHolding(holding, index) {
-    console.log("removeing " + holding);
-    this.db.doc(`holdings/${holding.id}`).delete();
-  }
-
-  openLoginPage() {
-    this.navCtrl.push(LoginPage);
-  }
-
-  openPremiumPage() {
-    this.navCtrl.push(PremiumPage);
-  }
+  openCoinSelectionPage() {this.navCtrl.push(CoinSelectionPage, { coinSymbols: this.coinSymbols }); }
+  openLoginPage() { this.navCtrl.push(LoginPage); }
+  openPremiumPage() { this.navCtrl.push(PremiumPage); }
 }

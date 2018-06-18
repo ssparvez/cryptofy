@@ -16,7 +16,7 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private settingsProvider: SettingsProvider, private premiumProvider: PremiumProvider
     /*private adMob: AdMobFree*/) {
-    this.settingsProvider.getTheme().subscribe(val => this.selectedTheme = val);
+    this.settingsProvider.getDarkMode().subscribe(val => this.selectedTheme = (val ? 'dark' : 'light') + '-theme');
     this.premiumProvider.configurePurchasing();
     //if(platform.is("cordova")) this.showBannerAd();
     platform.ready().then(() => {

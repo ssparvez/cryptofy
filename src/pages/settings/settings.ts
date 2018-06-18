@@ -8,11 +8,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LoginPage } from '../login/login';
-import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2';
 import { PremiumPage } from '../premium/premium';
-import { productId } from '../../environment';
 import { PremiumProvider } from '../../providers/premium-provider';
-
 
 @Component({
   selector: 'page-settings',
@@ -27,7 +24,7 @@ export class SettingsPage {
     notifications: true,
   }
   socialProvider: string;
-  fingerprintAvailable = true;
+  hasFingerprint = true;
 
   fingerprintOptions = {
     clientId: 'Fingerprint-Demo',
@@ -40,12 +37,12 @@ export class SettingsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public auth: AuthService, 
     public storage: Storage, private settingsProvider: SettingsProvider, private market: Market, private socialSharing: SocialSharing,
     private platform: Platform, private fingerprintAIO: FingerprintAIO, private inAppBrowser: InAppBrowser, private premiumProvider: PremiumProvider) {
-      this.platform.ready().then(() => {
-        if(this.platform.is("cordova")) {
-          this.isMobile = true;
-          this.checkFingerprint();
-        }
-      })
+    this.platform.ready().then(() => {
+      if(this.platform.is("cordova")) {
+        this.isMobile = true;
+        this.checkFingerprint();
+      }
+    });
   }
 
   ionViewWillEnter() {
@@ -61,34 +58,29 @@ export class SettingsPage {
     });
     this.premiumProvider.getPremium().subscribe(val => this.isPremium = val);
 
-    this.storage.ready().then(()=> {
-      for(let key in this.settings) {
-        this.storage.get(key).then(setting => {
-          console.log(`Your ${key} is ${setting}`);
-          if(setting !== null && setting !== undefined && setting.length !== 0) {
-            this.settings[key] = setting;
-          }
-        });
-      }
-    });
+    for(let key in this.settings) {
+      this.storage.get(key).then(setting => {
+        if(setting !== null && setting !== undefined && setting.length !== 0) {
+          this.settings[key] = setting;
+        }
+      });
+    }
   }
 
   async checkFingerprint() {
-    try {
-      this.fingerprintAvailable = await this.fingerprintAIO.isAvailable() == "OK";
-    }
+    try { this.hasFingerprint = await this.fingerprintAIO.isAvailable() == "OK"; }
     catch(e) { console.error(e); }
   }
 
   setDarkMode() {
     this.storage.set('darkMode', this.settings.darkMode);
     console.log(`dark mode set to ${this.settings.darkMode}`);
-    this.settingsProvider.setTheme(this.settings.darkMode ? "dark-theme" : 'light-theme');
+    this.settingsProvider.setDarkMode(this.settings.darkMode);
   }
-  setCurrency(value: any) {
-    this.storage.set('currency', value);
+  setCurrency() {
+    this.storage.set('currency', this.settings.currency);
     console.log(`currency mode set to ${this.settings.currency}`);
-    this.settingsProvider.setCurrency(this.settings.currency == 'USD' ? 'USD' : 'BTC');
+    this.settingsProvider.setCurrency(this.settings.currency);
   }
 
   setFingerprint() {
@@ -103,24 +95,10 @@ export class SettingsPage {
       .catch(err => console.log(err));
   }
 
-  openLoginPage() {
-    this.navCtrl.push(LoginPage);
-  }
-
-  openPremiumPage() {
-    this.navCtrl.push(PremiumPage);
-  }
-
-  rateApp() {
-    this.market.open('com.ssparvez.cryptofy');
-  }
-
-  shareApp() {
-    this.socialSharing.share("Download via: ", "Check out Cryptofy!", null, "https://ssparvez.github.io/cryptofy")
-      .then(() => console.log('shared'));
-  }
-
-  openPrivacyPolicy() {
-    this.inAppBrowser.create("https://ssparvez.github.io/cryptofy/privacy");
-  }
+  openLoginPage() { this.navCtrl.push(LoginPage); }
+  openPremiumPage() { this.navCtrl.push(PremiumPage); }
+  // app related stuff
+  rateApp() { this.market.open('com.ssparvez.cryptofy'); }
+  shareApp() { this.socialSharing.share(null, "Check out Cryptofy!", null, "https://ssparvez.github.io/cryptofy"); }
+  openPrivacyPolicy() { this.inAppBrowser.create("https://ssparvez.github.io/cryptofy/privacy"); }
 }

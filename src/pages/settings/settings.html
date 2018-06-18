@@ -43,7 +43,7 @@
     <ion-item>
       <ion-icon name='globe' item-start></ion-icon>
       <ion-label>Default Currency</ion-label>
-      <ion-select [(ngModel)]="settings.currency" interface="popover" (ionChange)="setCurrency($event)">
+      <ion-select [(ngModel)]="settings.currency" interface="popover" (ionChange)="setCurrency()">
         <ion-option value="USD">Dollars</ion-option>
         <ion-option value="BTC">Bitcoin</ion-option>
       </ion-select>
@@ -61,7 +61,7 @@
     <ion-item>
       <ion-label>Require Fingerprint</ion-label>
       <ion-icon name='finger-print' item-start></ion-icon>
-      <ion-toggle [(ngModel)]="settings.fingerprint" [disabled]="fingerprintAvailable" (ionChange)="setFingerprint()"></ion-toggle>
+      <ion-toggle [(ngModel)]="settings.fingerprint" [disabled]="hasFingerprint" (ionChange)="setFingerprint()"></ion-toggle>
     </ion-item> 
   </ion-list>
   <ion-list no-lines>

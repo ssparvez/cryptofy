@@ -13,13 +13,8 @@ export class PremiumProvider {
     this.isPremium = new BehaviorSubject(false);
   }
 
-  setPremium(val) {
-    this.isPremium.next(val);
-  }
-
-  getPremium() {
-    return this.isPremium.asObservable();
-  }
+  setPremium(val) { this.isPremium.next(val); }
+  getPremium() { return this.isPremium.asObservable(); }
 
   configurePurchasing() {
     try {
@@ -75,7 +70,7 @@ export class PremiumProvider {
       let product = this.store.get(productId);
       console.log('Product Info: ' + JSON.stringify(product));
       let order = await this.store.order(productId);
-      console.log('Finished Purchase');
+      console.log('Finished Purchase' + JSON.stringify(order));
     } catch (err) {
       console.log('Error Ordering ' + JSON.stringify(err));
     }

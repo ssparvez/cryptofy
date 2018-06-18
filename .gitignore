@@ -34,6 +34,9 @@ src/environment.ts
 www/
 $RECYCLE.BIN/
 
+# Make
+Makefile
+
 # android signing key
 my-release-key.keystore
 
