@@ -14,7 +14,10 @@
   </div>
   <ng-template #showCoins>
     <ion-list>
-      <ion-item *ngFor="let coin of coins | filter : searchInput" (tap)="openWalletInfoPage(coin)">{{coin.name}}</ion-item>
+      <ion-item *ngFor="let coin of coins | filter : searchInput | slice : 0 : upperBound" (tap)="openWalletInfoPage(coin)">{{coin.name}}</ion-item>
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </ion-list>
   </ng-template>
 </ion-content>

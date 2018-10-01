@@ -6,6 +6,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsProvider } from '../providers/settings-provider';
 import { PremiumProvider } from '../providers/premium-provider';
 //import { AdMobFree, AdMobFreeBannerConfig} from '@ionic-native/admob-free';
+//import { bannerId } from '../environment';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,32 +15,37 @@ export class MyApp {
   rootPage: any = TabsPage;
   selectedTheme: String = "light-theme";
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private settingsProvider: SettingsProvider, private premiumProvider: PremiumProvider
-    /*private adMob: AdMobFree*/) {
-    this.settingsProvider.getDarkMode().subscribe(val => this.selectedTheme = (val ? 'dark' : 'light') + '-theme');
-    this.premiumProvider.configurePurchasing();
-    //if(platform.is("cordova")) this.showBannerAd();
+  constructor(
+    platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private settingsProvider: SettingsProvider, 
+    private premiumProvider: PremiumProvider, /*private adMob: AdMobFree */) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
+      
+      //statusBar.styleDefault();
       splashScreen.hide();
+      this.settingsProvider.getDarkMode().subscribe(val => this.selectedTheme = (val ? 'dark' : 'light') + '-theme');
+      this.premiumProvider.configurePurchasing();
+      //this.showBannerAd();
     });
   }
-
-  // async showBannerAd() {
-  //   const bannerConfig: AdMobFreeBannerConfig = {
-  //     id: 'ca-app-pub-5196559267488563/6383526559',
-  //     isTesting: true,
-  //     autoShow: true
-  //   }
-  //   this.adMob.banner.config(bannerConfig);
-  //   try {
-  //     const result = this.adMob.banner.prepare();
-  //     console.log(result);
-  //   }
-  //   catch(error) {
-  //     console.log(error);
-  //   }
-  // }
+  /*
+  showBannerAd() {
+    console.log("yo")
+    const bannerConfig: AdMobFreeBannerConfig = {
+      id: bannerId,
+      autoShow: false,
+    }
+    this.adMob.banner.config(bannerConfig);
+    this.adMob.banner.prepare()
+      .then(() => {
+        console.log("ad success")
+        this.premiumProvider.getPremium().subscribe(val => {
+          if(val) this.adMob.banner.hide();
+          else this.adMob.banner.show();
+        })
+      })
+      .catch(e => console.log(e));
+  }
+  */
 }

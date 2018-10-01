@@ -61,7 +61,7 @@ export class PortfolioPage {
   }
   
   ionViewWillEnter() {
-    this.openFingerprintDialog();
+    this.checkFingerprint();
     this.showSpinner = true;
     this.auth.user
       .switchMap(user => this.getHoldings(user))
@@ -69,14 +69,18 @@ export class PortfolioPage {
       .subscribe(data => this.calculateHoldingValues(data), err => {});
   }
   
-  openFingerprintDialog() {
+  checkFingerprint() {
     this.settingsProvider.getFingerprint().subscribe(fingerprintToggled => {
-      if(fingerprintToggled && this.wasPaused) {
+      if(fingerprintToggled && this.wasPaused && this.auth.isSignedIn()) {
         this.showFingerprint = true;
         this.wasPaused = false;
-        this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false);
+        this.openFingerprintDialog();
       }
     }).unsubscribe(); // to prevent trigger from another page
+  }
+
+  openFingerprintDialog() {
+    this.fingerprintAIO.show(this.fingerprintOptions).then(() => this.showFingerprint = false);
   }
 
   getHoldings(user: User) {

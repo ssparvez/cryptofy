@@ -40,9 +40,7 @@ export class HoldingInfoPage {
     });
   }
 
-  closeModal() {
-    this.navCtrl.popToRoot();
-  }
+  closeModal() { this.navCtrl.popToRoot(); }
 
   submitHolding() {
     if(this.formType == 'Add') {

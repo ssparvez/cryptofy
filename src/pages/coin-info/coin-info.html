@@ -14,8 +14,8 @@
         <ion-note>Rank</ion-note> # {{coin.rank}}
         <span float-right><ion-note>Market Cap</ion-note> ${{coin.market_cap_usd | number}}</span>
       <div text-center>
-        <span style="font-weight: 700; font-size: 40px;">{{currency == 'USD'? ('$' + coin.price_usd) : ('฿' + coin.price_btc)}}</span><br>
-        <span style="font-weight: 500; font-size: 20px;" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">
+        <span class="current-price">{{currency == 'USD'? ('$' + coin.price_usd) : ('฿' + coin.price_btc)}}</span><br>
+        <span class="percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">
           <ion-icon style="vertical-align: middle;" [name]="(coin.percent_change_24h < 0) ? 'arrow-round-down' : 'arrow-round-up'"
             item-start></ion-icon>
           <span style="vertical-align: middle;">{{(coin.percent_change_24h * -1) + '\%'}}</span>
@@ -34,7 +34,7 @@
   <ion-list-header>News</ion-list-header>
   <ion-card *ngFor="let article of articles" (tap)="openBrowser(article.url)">
     <ion-item>
-      <h2 text-nowrap style="font-weight: bold; text-overflow: ellipsis; overflow: hidden;">{{article?.title}}</h2>
+      <h2 text-nowrap class="article-title">{{article?.title}}</h2>
       <p *ngIf="article.author">by {{article.author}}</p>
     </ion-item>
     <img [src]="article.urlToImage" onError="this.src='assets/imgs/stock-article.jpg'">

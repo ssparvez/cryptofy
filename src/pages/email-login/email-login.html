@@ -12,7 +12,7 @@
 <ion-content>
   <form [formGroup]="emailForm" (ngSubmit)="submitCredentials()">
     <ion-grid no-padding>
-      <ion-row radio-group formControlName="createOrLogIn">
+      <ion-row radio-group formControlName="type">
         <ion-item>
           <ion-label>Log In</ion-label>
           <ion-radio value="logIn"></ion-radio>

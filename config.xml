@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ssparvez.cryptofy" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ssparvez.cryptofy" version="0.0.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Cryptofy</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="shhrrparvez@gmail.com" href="http://ssparvez.github.io/cryptofy/">Ionic Framework Team</author>
@@ -107,6 +107,7 @@
     <plugin name="cc.fovea.cordova.purchase" spec="^7.1.3">
         <variable name="BILLING_KEY" value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApmEk9AI8XSo23e8/yqAYzkIXevxxz03VO3jwYVqoOY0M46S1TJ2SuqDU1sN+AI4hWhZP5zpeWRw5+R86Sul7zMO5g0lNo8yfqciWUvVRadWrULhZLb25ZDXr+5N0zjd74hsQbi625Ai5yQhYkwxO0CJwqbUCdpdu8+haHQasDc+QaS/dA6Ul5QdkIjAjh8XJoHupK0c/gvx6NzpuiT0L1fwy6xxwPXmrx/rZhTwBvuIilT9FhPkYjDBa7HOcvDQLij0LpHLzcTQWbHQzgXGangY2NWF5pX2rrLx8arqfXgEJSF0sWZJRAgw2EDvnJkHZc30UhXAJ868IvpkNBH7EgQIDAQAB" />
     </plugin>
-    <engine name="ios" spec="~4.5.4" />
-    <engine name="android" spec="~7.0.0" />
+    <engine name="android" spec="7.0.0" />
+    <engine name="ios" spec="4.5.5" />
+    <plugin name="cordova-sqlite-storage" spec="^2.4.0" />
 </widget>

@@ -17,7 +17,7 @@ export class AuthService {
   toast: Toast;
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, public toastCtrl: ToastController, private platform: Platform, private gplus: GooglePlus, private facebook: Facebook, private twitter: TwitterConnect) {
-    this.toast = this.toastCtrl.create({duration: 1000, position: 'top'});
+    this.toast = this.toastCtrl.create({duration: 3000, position: 'top'});
     // Get auth data, then get firestore user document || null
     this.user = this.afAuth.authState.switchMap(user => {
       if(user) return this.db.doc<User>(`users/${user.uid}`).valueChanges()
@@ -26,33 +26,11 @@ export class AuthService {
   }
 
   async createAccountWithEmail(credentials) {
-    return await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
-      .then(credential => {
-        console.log(credential);
-        this.updateUserData(credential);
-        this.toast.setMessage('Account made!');
-        this.toast.present();
-      })
-      .catch(error => {
-        console.log(error);
-        this.toast.setMessage("Couldn't make account");
-        this.toast.present();
-      });
+    return await this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password);
   }
 
   async signInWithEmail(credentials) {
-    return await this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(credential => {
-        this.updateUserData(credential);
-        this.toast.setMessage('Hi!');
-        this.toast.present();
-      })
-      .catch(error => {
-        console.log(error);
-        this.toast.setMessage('Invalid email or password');
-        this.toast.present();
-      }
-    );
+    return await this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
   }
 
   async nativeSocialSignIn(social) {
@@ -70,14 +48,7 @@ export class AuthService {
       credential = firebase.auth.TwitterAuthProvider.credential(user.token, user.secret);
     }
     console.log(user);
-    return await this.afAuth.auth.signInWithCredential(credential)
-      .then(credential => {
-        console.log(credential);
-        this.updateUserData(credential);
-        this.toast.setMessage(`Hi!`);
-        this.toast.present();
-      })
-      .catch(err => console.log(err));
+    return await this.afAuth.auth.signInWithCredential(credential);
   }
 
   async webSocialSignIn(social: string) {
@@ -86,21 +57,20 @@ export class AuthService {
       'facebook': new firebase.auth.FacebookAuthProvider(),
       'twitter': new firebase.auth.TwitterAuthProvider()
     }
-    const toast = this.toastCtrl.create({duration: 1000, position: 'top'});
-    return await this.afAuth.auth.signInWithRedirect(provider[social])
-      .then(credential => {
-        this.updateUserData(credential.user);
-        toast.setMessage('Successfully signed in :)');
-        toast.present();
-      })
-      .catch(error => {
-        toast.setMessage('Unsuccessful sign in :(');
-        toast.present();
-      }
-    );
+    return await this.afAuth.auth.signInWithRedirect(provider[social]);
   }
 
-  private updateUserData(user) {
+  // linkSocialSignIn(credential) {
+  //   this.afAuth.auth.onAuthStateChanged(user => {
+  //     if (user) {
+  //       return this.afAuth.auth.currentUser.linkWithCredential(credential)
+  //         .then(val => console.log(val))
+  //         .catch(err => console.log(err));
+  //     } 
+  //   });
+  // }
+
+  updateUserData(user) {
     // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<any> = this.db.doc(`users/${user.uid}`);
     const data: User = {
@@ -111,6 +81,8 @@ export class AuthService {
     };
     return userRef.set(data, {merge: true});
   }
+
+  isSignedIn() { return this.afAuth.auth.currentUser != null }
   
   signOut() {
     this.afAuth.auth.signOut();

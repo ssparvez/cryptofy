@@ -31,7 +31,7 @@ import { PremiumProvider } from '../providers/premium-provider';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-//import { AdMobFree } from '@ionic-native/admob-free'
+import { AdMobFree } from '@ionic-native/admob-free';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
@@ -39,6 +39,7 @@ import { Market } from '@ionic-native/market';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2';
+//import { InAppPurchase } from '@ionic-native/in-app-purchase';
 
 // firebase
 import { AngularFireModule } from 'angularfire2';
@@ -65,7 +66,7 @@ import { CoreModule } from '../core/core.module';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, { mode: 'md' }), // mode: md defaults to material design for ios
     IonicStorageModule.forRoot(),
     HttpClientModule,
     AngularFireModule.initializeApp(firebaseConfig),
@@ -98,12 +99,13 @@ import { CoreModule } from '../core/core.module';
     GooglePlus,
     Facebook,
     TwitterConnect,
-    //AdMobFree,
+    AdMobFree,
     Market,
     SocialSharing,
     FingerprintAIO,
     InAppPurchase2,
-    PremiumProvider
+    PremiumProvider,
+    //InAppPurchase
   ]
 })
 export class AppModule {}

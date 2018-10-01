@@ -153,6 +153,10 @@ p.lead {
     background-color: #E8EAF6;
 }
 
+.white-bg {
+    background-color: #fff;
+}
+
 .section {
     padding: 80px 0;
 }

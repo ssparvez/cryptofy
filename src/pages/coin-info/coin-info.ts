@@ -22,27 +22,13 @@ export class CoinInfoPage {
       fill: false,
       pointRadius: 0
     }],
-    colors: [{
-      borderColor: '#3D5AFE'
-    }],
+    colors: [{ borderColor: '#3D5AFE' }],
     options: {
-      legend: {
-        display: false
-      },
-      tooltips: {
-        enabled: false
-      },
+      legend: { display: false },
+      tooltips: { enabled: false },
       scales: {
-        xAxes: [{
-          gridLines: {
-            drawBorder: false
-          }
-        }],
-        yAxes: [{
-          gridLines: {
-            drawBorder: false
-          }
-        }]
+        xAxes: [{ gridLines: { drawBorder: false } }],
+        yAxes: [{ gridLines: { drawBorder: false } }]
       }
     }
   }
@@ -50,7 +36,6 @@ export class CoinInfoPage {
   currency: String = "USD";
   constructor(public navCtrl: NavController, private dataProvider: DataProvider, private navParams: NavParams, private iab: InAppBrowser, private settingsProvider: SettingsProvider) {
     this.coin = this.navParams.get('coin');
-    console.log(this.coin.name);
     console.log(this.coin);
   }
 
@@ -68,8 +53,5 @@ export class CoinInfoPage {
     this.settingsProvider.getCurrency().subscribe(val => this.currency = val);
   }
 
-  openBrowser(articleUrl) {
-    this.iab.create(articleUrl);
-  }
-
+  openBrowser(articleUrl) { this.iab.create(articleUrl); }
 }

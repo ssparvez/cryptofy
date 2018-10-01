@@ -16,26 +16,53 @@
     <div class="dot2"></div>
   </div>
   <ng-template #showCoins>
-    <span style="float: right; padding-right: 13px; padding-bottom: 4px;">Past 24h</span>
-    <ion-card *ngFor="let coin of coins  | filter : searchInput | slice : 0 : upperBound" (tap)="openCoinInfoPage(coin)" (press)="openCoinOptions(coin)">
-      <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
-        <span>
-          <b>{{coin.name}}</b> ({{coin.symbol}})</span>
-        <span class="coin-percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">
-          {{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}
-        </span>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-row no-padding>
-          <ion-col no-padding>
-            <span class="coin-price">{{currency == 'USD'? ('$ ' + coin.price_usd) : ('฿ ' + coin.price_btc)}}</span>
-          </ion-col>
-          <!--<ion-col col-1 no-padding align-self-center>
-            <ion-icon name='star-outline' float-right style="font-size: 20px;" (tap)="addToFavorites(coin.symbol)"></ion-icon>
-          </ion-col>-->
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
+    <span (tap)="openFilterOptions()" style="padding-left: 13px; ">
+        <span style="font-weight:700; opacity: 0.5;">{{listFilter}}</span>
+        <ion-icon name="arrow-dropdown" ios="arrow-down" style="vertical-align: middle; opacity: 0.5;"></ion-icon>
+    </span>
+    
+    <span style="float: right; padding-right: 13px; " (tap)="openLayoutOptions()" >
+        <span style="font-weight:700; opacity: 0.5;">{{listLayout}}</span>
+        <ion-icon name="arrow-dropdown" ios="arrow-down" style="vertical-align: middle; opacity: 0.5;"></ion-icon>
+    </span>
+    
+    <div *ngIf="listLayout == 'Comfortable'; else compact">
+      <ion-card *ngFor="let coin of coins  | filter : searchInput | slice : 0 : upperBound" (tap)="openCoinInfoPage(coin)" (press)="openCoinOptions(coin)">
+        <ion-card-header [ngClass]="(coin.percent_change_24h < 0) ? 'red-top' : 'green-top'">
+          <span>
+            <b>{{coin.name}}</b> ({{coin.symbol}})</span>
+          <span style="float: right;">
+              <span class="coin-percent-change" [ngClass]="(coin.percent_change_24h < 0) ? 'red-text' : 'green-text'">
+                  {{coin.percent_change_24h > 0 ? '\+' + coin.percent_change_24h + '\%' : coin.percent_change_24h + '\%'}}
+                </span>
+                <span style="opacity: 0.5; font-size: 10px; margin-bottom: 2px;">
+                    (24h)
+                  </span>
+          </span>
+          
+        </ion-card-header>
+        <ion-card-content>
+          <ion-row no-padding>
+            <ion-col no-padding>
+              <span class="coin-price">{{currency == 'USD'? ('$ ' + coin.price_usd) : ('฿ ' + coin.price_btc)}}</span>
+            </ion-col>
+            <!--<ion-col col-1 no-padding align-self-center>
+              <ion-icon name='star-outline' float-right style="font-size: 20px;" (tap)="addToFavorites(coin.symbol)"></ion-icon>
+            </ion-col>-->
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <!-- compact styling-->
+    <ng-template #compact>
+        <ion-card *ngFor="let coin of coins  | filter : searchInput | slice : 0 : upperBound" (tap)="openCoinInfoPage(coin)" (press)="openCoinOptions(coin)">
+            <ion-card-content [ngClass]="(coin.percent_change_24h < 0) ? 'red-side' : 'green-side'">
+                <span style="font-weight: bold;">{{coin.name}}</span>
+                <span style="float: right;">{{currency == 'USD'? ('$ ' + (coin.price_usd | number)) : ('฿ ' + (coin.price_btc | number))}}</span>
+            </ion-card-content>
+          </ion-card>
+    </ng-template>
+    
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>

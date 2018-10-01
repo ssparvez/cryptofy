@@ -7,9 +7,9 @@ import { Market } from '@ionic-native/market';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { LoginPage } from '../login/login';
 import { PremiumPage } from '../premium/premium';
 import { PremiumProvider } from '../../providers/premium-provider';
+
 
 @Component({
   selector: 'page-settings',
@@ -56,14 +56,19 @@ export class SettingsPage {
         else this.socialProvider = "email";
       }
     });
-    this.premiumProvider.getPremium().subscribe(val => this.isPremium = val);
-
+    this.premiumProvider.getPremium().subscribe(val => {
+      this.isPremium = val
+      console.log("is premium is: " + this.isPremium);
+    });
+    // not sure if this works, test later
+    alert("check settings intializations yo");
     for(let key in this.settings) {
-      this.storage.get(key).then(setting => {
-        if(setting !== null && setting !== undefined && setting.length !== 0) {
-          this.settings[key] = setting;
-        }
-      });
+      this.settings[key] = this.settingsProvider.settings[key].value;
+      // this.storage.get(key).then(setting => {
+      //   if(setting !== null && setting !== undefined && setting.length !== 0) {
+      //     this.settings[key] = setting;
+      //   }
+      // });
     }
   }
 
@@ -95,7 +100,7 @@ export class SettingsPage {
       .catch(err => console.log(err));
   }
 
-  openLoginPage() { this.navCtrl.push(LoginPage); }
+  switchToPortfolioPage() { this.navCtrl.parent.select(1) }
   openPremiumPage() { this.navCtrl.push(PremiumPage); }
   // app related stuff
   rateApp() { this.market.open('com.ssparvez.cryptofy'); }

@@ -11,10 +11,15 @@ export class PremiumPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private platform: Platform, public premiumProvider: PremiumProvider) {
     this.platformName = (this.platform.is("ios") ? "iOS" : (this.platform.is("android") ? "Android" : null));
+    this.premiumProvider.getPremium().subscribe(isPremium => {
+      if(isPremium) {
+        this.navCtrl.popToRoot();
+        this.navCtrl.parent.select(1);
+      }
+    })
   }
 
-  async purchase() {
-    await this.premiumProvider.purchase();
-    //this.navCtrl.popToRoot();
-  }
+  async purchase() { await this.premiumProvider.purchase(); }
+
+  ionViewWillLeave() { this.navCtrl.popToRoot(); }
 }

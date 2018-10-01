@@ -27,7 +27,13 @@ export class CoinSelectionPage {
     });
   }
 
-  openWalletInfoPage(coin) {
-    this.navCtrl.push(HoldingInfoPage, {coin, type: 'Add'});
+  openWalletInfoPage(coin) { this.navCtrl.push(HoldingInfoPage, {coin, type: 'Add'}); }
+
+  upperBound: number = 50;
+  doInfinite(infiniteScroll) {
+    setTimeout(() => {
+      this.upperBound += 50;
+      infiniteScroll.complete();
+    }, 200);
   }
 }

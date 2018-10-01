@@ -5,6 +5,9 @@
     &top {
         border-top: 4px solid #FF4081;
     }
+    &side {
+        border-left: 4px solid #FF4081;
+    }
 }
 .green- {
     &text {
@@ -12,6 +15,9 @@
     }
     &top {
         border-top: 4px solid #1DE9B6;
+    }
+    &side {
+        border-left: 4px solid #1DE9B6;
     }
 }
 
@@ -21,7 +27,6 @@
 }
 
 .coin-percent-change {
-    float: right;
 }
 
 ion-card {

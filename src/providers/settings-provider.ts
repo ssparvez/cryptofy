@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class SettingsProvider {
 
-    private settings: {
+    settings: {
         darkMode: BehaviorSubject<Boolean>,
         currency: BehaviorSubject<String>,
         fingerprint: BehaviorSubject<Boolean>
@@ -18,12 +18,11 @@ export class SettingsProvider {
             currency: new BehaviorSubject('USD'),
             fingerprint: new BehaviorSubject(false)
         }
-        
         this.storage.ready().then(() => {
             for(let key in this.settings) {
                 this.storage.get(key).then(setting => {
                     console.log(`Your ${key} is ${setting}`);
-                    if(setting !== null && setting !== undefined && setting.length !== 0) {
+                    if(setting && setting.length !== 0) {
                         this.settings[key].next(setting);
                     }
                 });
