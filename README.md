@@ -6,4 +6,4 @@ Downloads will be available [here](https://ssparvez.github.io/cryptofy) soon.
 ## The Stack
 The frontend utilizes [Angular 5](https://angular.io/) and leverages Google's cloud-based backend service, [Firebase](https://firebase.google.com/), with Cloud Firestore (a NoSQL database engine).
 
-Data is fetched from the News API, Coin Market Cap and CryptoCompare.
+3rd Party Data is fetched from the News API, Coin Market Cap and CryptoCompare.
